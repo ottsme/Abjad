@@ -1,1433 +1,1525 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Arabic Letters & Marks</title>
+    <title>Arabic Script Flashcards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-            background-color: #f9f9f9;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-top: 80px;
+            overflow-x: hidden;
         }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .section {
-            background: white;
-            margin: 20px 0;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .section h2 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-        
-        .letter-family {
-            margin: 30px 0;
-            padding: 15px;
-            background: #f8f9fa;
-            border-left: 5px solid #3498db;
-            border-radius: 5px;
-        }
-        
-        .letter-family h3 {
-            color: #34495e;
-            margin-top: 0;
-        }
-        
-        .forms-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-            margin: 15px 0;
-        }
-        
-        .form-example {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            border: 2px solid #ecf0f1;
-            transition: all 0.3s ease;
-        }
-        
-        .form-example:active {
-            border-color: #3498db;
-            box-shadow: 0 3px 10px rgba(52, 152, 219, 0.2);
-        }
-        
-        .form-example:focus {
-            border-color: #3498db;
-            box-shadow: 0 3px 10px rgba(52, 152, 219, 0.2);
-            outline: none;
-        }
-        
-        .form-name {
-            font-weight: bold;
-            color: #7f8c8d;
-            font-size: 0.9em;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-        
-        .arabic-text {
-            font-family: 'Arial Unicode MS', 'Tahoma', sans-serif;
-            font-size: 28px;
-            text-align: right;
-            direction: rtl;
-            margin: 10px 0;
-            line-height: 1.4;
-        }
-        
-        .target {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-        
-        .transliteration {
-            font-style: italic;
-            color: #16a085;
-            font-size: 16px;
-            margin: 5px 0;
-        }
-        
-        .translation {
-            color: #34495e;
-            font-size: 14px;
-        }
-        
-        .marks-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-        
-        .mark-example {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            border: 2px solid #ecf0f1;
-            transition: all 0.3s ease;
-        }
-        
-        .mark-example:active {
-            border-color: #e67e22;
-            box-shadow: 0 3px 10px rgba(230, 126, 34, 0.2);
-        }
-        
-        .mark-example:focus {
-            border-color: #e67e22;
-            box-shadow: 0 3px 10px rgba(230, 126, 34, 0.2);
-            outline: none;
-        }
-        
-        .mark-name {
-            font-weight: bold;
-            color: #e67e22;
-            margin-bottom: 8px;
-        }
-        
-        .info-box {
-            background: #e8f4fd;
-            border-left: 5px solid #3498db;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 5px;
-        }
-        
-        .toc {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-        
-        .toc h3 {
-            margin-top: 0;
-            color: #2c3e50;
-        }
-        
-        .toc a {
-            color: #3498db;
-            text-decoration: none;
-            margin-right: 15px;
-        }
-        
-        .toc a:hover {
-            text-decoration: underline;
-        }
-        
-        .sticky-nav {
+
+        .nav-bar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: #2c3e50;
-            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            display: none;
+            padding: 10px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         }
-        
-        .sticky-nav.visible {
-            display: block;
+
+        .nav-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            max-width: 100%;
         }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            overflow-x: auto;
-            white-space: nowrap;
+
+        .nav-group {
+            margin: 2px;
         }
-        
-        .nav-container::-webkit-scrollbar {
-            height: 4px;
+
+        .nav-group-label {
+            font-size: 10px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 2px;
         }
-        
-        .nav-container::-webkit-scrollbar-track {
-            background: #34495e;
+
+        .nav-buttons {
+            display: flex;
+            gap: 3px;
         }
-        
-        .nav-container::-webkit-scrollbar-thumb {
-            background: #3498db;
-            border-radius: 2px;
+
+        .nav-btn {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 4px 6px;
+            font-size: 18px;
+            font-family: 'Amiri', serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 35px;
+            text-align: center;
         }
-        
-        .nav-item {
-            display: inline-block;
+
+        .nav-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #9e0303;
             color: white;
-            text-decoration: none;
-            padding: 8px 12px;
-            margin: 0 5px;
-            border-radius: 4px;
+            border-color: #9e0303;
+        }
+
+        .diacritic-btn {
             font-size: 14px;
-            transition: background-color 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            padding: 4px 8px;
+            min-width: auto;
         }
-        
-        .nav-item:active {
-            background-color: #3498db;
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 100px);
+            padding: 20px;
         }
-        
-        .nav-item:focus {
-            background-color: #3498db;
-            outline: none;
+
+        .flashcard {
+            width: 90vw;
+            max-width: 400px;
+            height: 70vh;
+            min-height: 500px;
+            perspective: 1000px;
+            cursor: pointer;
         }
-        
-        /* Add top margin to body when sticky nav is visible */
-        body.nav-visible {
-            margin-top: 60px;
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
         }
-        
-        @media (max-width: 768px) {
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            border: 3px solid #e0e0e0;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+            border: 3px solid #d0d0d0;
+            transform: rotateY(180deg);
+        }
+
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            font-size: clamp(48px, 12vw, 84px);
+            line-height: 1.4;
+            color: #333;
+            margin: 20px 0;
+            word-spacing: 0.1em;
+        }
+
+        .target-letter {
+            color: #9e0303 !important;
+            font-weight: bold;
+        }
+
+        .card-info {
+            margin-top: 30px;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .transliteration {
+            font-style: italic;
+            color: #666;
+            margin: 10px 0;
+            font-size: 20px;
+        }
+
+        .translation {
+            color: #333;
+            font-weight: 600;
+            margin: 10px 0;
+            font-size: 22px;
+        }
+
+        .target-highlight {
+            background: rgba(158, 3, 3, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #9e0303;
+        }
+
+        .target-letter-display {
+            font-family: 'Amiri', serif;
+            font-size: 48px;
+            color: #9e0303;
+            font-weight: bold;
+        }
+
+        .target-name {
+            font-size: 16px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .progress {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .instruction {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #666;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+
+        @media (max-width: 480px) {
+            .nav-btn {
+                min-width: 30px;
+                padding: 3px 5px;
+                font-size: 16px;
+            }
+            
             .arabic-text {
-                font-size: 24px;
+                font-size: clamp(40px, 15vw, 72px);
             }
             
-            .forms-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-item {
-                font-size: 12px;
-                padding: 6px 8px;
-            }
-            
-            .nav-container {
-                padding: 0 10px;
+            .card-face {
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Sticky Navigation Bar -->
-    <div class="sticky-nav" id="stickyNav">
-        <div class="nav-container">
-            <a href="#alif-family" class="nav-item">Alif</a>
-            <a href="#ba-family" class="nav-item">Ba</a>
-            <a href="#jim-family" class="nav-item">Jim</a>
-            <a href="#dal-family" class="nav-item">Dal</a>
-            <a href="#ra-family" class="nav-item">Ra</a>
-            <a href="#sin-family" class="nav-item">Sin</a>
-            <a href="#sad-family" class="nav-item">Sad</a>
-            <a href="#ta-family" class="nav-item">Ta</a>
-            <a href="#ain-family" class="nav-item">Ain</a>
-            <a href="#fa-family" class="nav-item">Fa</a>
-            <a href="#kaf-family" class="nav-item">Kaf</a>
-            <a href="#mim-family" class="nav-item">Mim</a>
-            <a href="#ha-family" class="nav-item">Ha</a>
-            <a href="#waw-family" class="nav-item">Waw</a>
-            <a href="#vowel-marks" class="nav-item">Vowels</a>
-            <a href="#other-marks" class="nav-item">Marks</a>
+    <div class="nav-bar">
+        <div class="nav-content" id="navContent">
+            <!-- Navigation will be populated by JavaScript -->
         </div>
     </div>
 
-    <div class="header">
-        <h1>Interactive Arabic Letters & Marks</h1>
-        <p>Complete guide to Arabic script with all letter forms, vowel marks, and diacriticals</p>
-    </div>
-
-    <div class="toc">
-        <h3>Quick Navigation</h3>
-        <a href="#alif-family">Alif Family</a>
-        <a href="#ba-family">Ba Family</a>
-        <a href="#jim-family">Jim Family</a>
-        <a href="#dal-family">Dal Family</a>
-        <a href="#ra-family">Ra Family</a>
-        <a href="#sin-family">Sin Family</a>
-        <a href="#sad-family">Sad Family</a>
-        <a href="#ta-family">Ta Family</a>
-        <a href="#ain-family">Ain Family</a>
-        <a href="#fa-family">Fa Family</a>
-        <a href="#kaf-family">Kaf Family</a>
-        <a href="#mim-family">Mim Family</a>
-        <a href="#ha-family">Ha Family</a>
-        <a href="#waw-family">Waw Family</a>
-        <a href="#ya-family">Ya Family</a>
-        <a href="#vowel-marks">Vowel Marks</a>
-        <a href="#other-marks">Other Marks</a>
-    </div>
-
-    <div class="info-box">
-        <strong>How to use:</strong> Each letter is shown in all its forms (isolated, initial, medial, final) with example words. The target letter is highlighted in <span style="color: #e74c3c;">red</span> in each example. All words include full vocalization (tashkīl), transliteration, and English translation.
-    </div>
-
-    <div class="section">
-        <h2>Arabic Letters by Families</h2>
-
-        <div id="alif-family" class="letter-family">
-            <h3>Alif Family (أ، آ، إ)</h3>
-            
-            <h4>أ (Alif with Hamza above)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text">هَ<span class="target">ٰ</span>ذَا</div>
-                <div class="transliteration">hādhā</div>
-                <div class="translation">this</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Wasla (ٱ)</div>
-                <div class="arabic-text">وَ<span class="target">ٱ</span>للَّهُ</div>
-                <div class="transliteration">wa-llāhu</div>
-                <div class="translation">and Allah</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>Special Letter Combinations</h2>
-
-        <div class="letter-family">
-            <h3>Lam-Alif Ligature (لا)</h3>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Lam-Alif (لا)</div>
-                    <div class="arabic-text"><span class="target">لَا</span> إِلَهَ إِلَّا اللَّهُ</div>
-                    <div class="transliteration">lā 'ilāha 'illa-llāhu</div>
-                    <div class="translation">There is no god but Allah</div>
+    <div class="card-container">
+        <div class="flashcard" id="flashcard">
+            <div class="card" id="card">
+                <div class="card-face card-front">
+                    <div class="instruction">Tap to flip • Look for the red letter</div>
+                    <div class="arabic-text" id="arabicText"></div>
                 </div>
-                
-                <div class="form-example">
-                    <div class="form-name">With Hamza (لأ)</div>
-                    <div class="arabic-text">وَ<span class="target">لَأَ</span>كْبَرُ</div>
-                    <div class="transliteration">wa-la'akbaru</div>
-                    <div class="translation">and surely greater</div>
-                </div>
-                
-                <div class="form-example">
-                    <div class="form-name">With Madda (لآ)</div>
-                    <div class="arabic-text"><span class="target">لَآ</span>خِرَةُ</div>
-                    <div class="transliteration">la'ākhiratu</div>
-                    <div class="translation">surely the hereafter</div>
+                <div class="card-face card-back">
+                    <div class="target-highlight">
+                        <div class="target-letter-display" id="targetDisplay"></div>
+                        <div class="target-name" id="targetName"></div>
+                    </div>
+                    <div class="card-info">
+                        <div class="transliteration" id="transliteration"></div>
+                        <div class="translation" id="translation"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="info-box">
-        <h3>Key Learning Points:</h3>
-        <ul>
-            <li><strong>Letter Families:</strong> Letters in the same family share basic shapes but differ in dot placement</li>
-            <li><strong>Connecting Letters:</strong> Most letters connect to the next letter, except أ، د، ذ، ر، ز، و</li>
-            <li><strong>Four Forms:</strong> Most letters have isolated, initial, medial, and final forms</li>
-            <li><strong>Tashkīl:</strong> Vowel marks are essential in Quranic Arabic but often omitted in modern texts</li>
-            <li><strong>Case Endings:</strong> Tanwīn marks show grammatical case in Classical Arabic</li>
-            <li><strong>Emphasis:</strong> Arabic has emphatic consonants (ص، ض، ط، ظ، ق) that affect surrounding vowels</li>
-        </ul>
+    <div class="controls">
+        <button class="control-btn" id="prevBtn">←</button>
+        <button class="control-btn" id="nextBtn">→</button>
     </div>
 
-    <div class="section" style="text-align: center; margin-top: 40px;">
-        <h3>Practice Tips</h3>
-        <p>✦ Focus on one letter family at a time</p>
-        <p>✦ Practice connecting letters in sequence</p>
-        <p>✦ Pay attention to how letters change shape in different positions</p>
-        <p>✦ Learn common Quranic words to see patterns</p>
-        <p>✦ Always include tashkīl when reading Quranic Arabic</p>
+    <div class="progress" id="progress">
+        <span id="currentCard">1</span> / <span id="totalCards">0</span>
     </div>
-
-    <footer style="text-align: center; margin-top: 50px; padding: 20px; border-top: 2px solid #ecf0f1; color: #7f8c8d;">
-        <p>Interactive Arabic Letters & Marks Guide</p>
-        <p>Perfect for learning Quranic Arabic script with full vocalization</p>
-    </footer>
 
     <script>
-        // Sticky navigation functionality
-        window.addEventListener('scroll', function() {
-            const stickyNav = document.getElementById('stickyNav');
-            const toc = document.querySelector('.toc');
-            const tocBottom = toc.offsetTop + toc.offsetHeight;
+        const flashcards = [
+            // ا family (Alif)
+            {
+                arabic: 'ٱللَّهُ',
+                target: 'ا',
+                position: 'initial',
+                transliteration: 'Allāh',
+                translation: 'Allah',
+                targetName: 'Alif (initial)'
+            },
+            {
+                arabic: 'مَلَائِكَةً',
+                target: 'ا',
+                position: 'medial',
+                transliteration: 'malāʾikatan',
+                translation: 'angels',
+                targetName: 'Alif (medial)'
+            },
+            {
+                arabic: 'دُعَاءً',
+                target: 'ا',
+                position: 'final',
+                transliteration: 'duʿāʾan',
+                translation: 'prayer/supplication',
+                targetName: 'Alif (final)'
+            },
+            {
+                arabic: 'أَنْزَلْنَا',
+                target: 'ا',
+                position: 'isolated',
+                transliteration: 'anzalnā',
+                translation: 'We sent down',
+                targetName: 'Alif (isolated)'
+            },
+
+            // ب-ت-ث family
+            {
+                arabic: 'بِسْمِ',
+                target: 'ب',
+                position: 'initial',
+                transliteration: 'bismi',
+                translation: 'in the name of',
+                targetName: 'Bāʾ (initial)'
+            },
+            {
+                arabic: 'كِتَابٌ',
+                target: 'ب',
+                position: 'medial',
+                transliteration: 'kitābun',
+                translation: 'book',
+                targetName: 'Bāʾ (medial)'
+            },
+            {
+                arabic: 'غَرْبِ',
+                target: 'ب',
+                position: 'final',
+                transliteration: 'gharbi',
+                translation: 'west',
+                targetName: 'Bāʾ (final)'
+            },
+            {
+                arabic: 'رَبُّ',
+                target: 'ب',
+                position: 'isolated',
+                transliteration: 'rabbu',
+                translation: 'Lord',
+                targetName: 'Bāʾ (isolated)'
+            },
+
+            {
+                arabic: 'تُوبُوا',
+                target: 'ت',
+                position: 'initial',
+                transliteration: 'tūbū',
+                translation: 'repent',
+                targetName: 'Tāʾ (initial)'
+            },
+            {
+                arabic: 'كِتَابٌ',
+                target: 'ت',
+                position: 'medial',
+                transliteration: 'kitābun',
+                translation: 'book',
+                targetName: 'Tāʾ (medial)'
+            },
+            {
+                arabic: 'بَيْتِ',
+                target: 'ت',
+                position: 'final',
+                transliteration: 'bayti',
+                translation: 'house',
+                targetName: 'Tāʾ (final)'
+            },
+            {
+                arabic: 'وَقْتٌ',
+                target: 'ت',
+                position: 'isolated',
+                transliteration: 'waqtun',
+                translation: 'time',
+                targetName: 'Tāʾ (isolated)'
+            },
+
+            {
+                arabic: 'ثَلَاثَةٌ',
+                target: 'ث',
+                position: 'initial',
+                transliteration: 'thalātha',
+                translation: 'three',
+                targetName: 'Thāʾ (initial)'
+            },
+            {
+                arabic: 'مِيثَاقًا',
+                target: 'ث',
+                position: 'medial',
+                transliteration: 'mīthāqan',
+                translation: 'covenant',
+                targetName: 'Thāʾ (medial)'
+            },
+            {
+                arabic: 'الْحَدِيثِ',
+                target: 'ث',
+                position: 'final',
+                transliteration: 'al-ḥadīthi',
+                translation: 'the speech',
+                targetName: 'Thāʾ (final)'
+            },
+            {
+                arabic: 'بَعْثٌ',
+                target: 'ث',
+                position: 'isolated',
+                transliteration: 'baʿthun',
+                translation: 'resurrection',
+                targetName: 'Thāʾ (isolated)'
+            },
+
+            // ج-ح-خ family
+            {
+                arabic: 'جَنَّةٌ',
+                target: 'ج',
+                position: 'initial',
+                transliteration: 'jannatun',
+                translation: 'paradise',
+                targetName: 'Jīm (initial)'
+            },
+            {
+                arabic: 'مُنَافِقُونَ',
+                target: 'ج',
+                position: 'medial',
+                transliteration: 'munāfiqūna',
+                translation: 'hypocrites',
+                targetName: 'Jīm (medial)'
+            },
+            {
+                arabic: 'الْحَجِّ',
+                target: 'ج',
+                position: 'final',
+                transliteration: 'al-ḥajji',
+                translation: 'the pilgrimage',
+                targetName: 'Jīm (final)'
+            },
+            {
+                arabic: 'رَجْعٌ',
+                target: 'ج',
+                position: 'isolated',
+                transliteration: 'rajʿun',
+                translation: 'return',
+                targetName: 'Jīm (isolated)'
+            },
+
+            {
+                arabic: 'حَمِدَ',
+                target: 'ح',
+                position: 'initial',
+                transliteration: 'ḥamida',
+                translation: 'he praised',
+                targetName: 'Ḥāʾ (initial)'
+            },
+            {
+                arabic: 'رَحْمَةً',
+                target: 'ح',
+                position: 'medial',
+                transliteration: 'raḥmatan',
+                translation: 'mercy',
+                targetName: 'Ḥāʾ (medial)'
+            },
+            {
+                arabic: 'رُوحِ',
+                target: 'ح',
+                position: 'final',
+                transliteration: 'rūḥi',
+                translation: 'spirit',
+                targetName: 'Ḥāʾ (final)'
+            },
+            {
+                arabic: 'نُوحٌ',
+                target: 'ح',
+                position: 'isolated',
+                transliteration: 'Nūḥun',
+                translation: 'Noah',
+                targetName: 'Ḥāʾ (isolated)'
+            },
+
+            {
+                arabic: 'خَيْرٌ',
+                target: 'خ',
+                position: 'initial',
+                transliteration: 'khayrun',
+                translation: 'good/better',
+                targetName: 'Khāʾ (initial)'
+            },
+            {
+                arabic: 'مَخْلُوقَاتٍ',
+                target: 'خ',
+                position: 'medial',
+                transliteration: 'makhlūqātin',
+                translation: 'creatures',
+                targetName: 'Khāʾ (medial)'
+            },
+            {
+                arabic: 'صَرْخَةٍ',
+                target: 'خ',
+                position: 'final',
+                transliteration: 'ṣarkhatin',
+                translation: 'cry/shout',
+                targetName: 'Khāʾ (final)'
+            },
+            {
+                arabic: 'شَيْخٌ',
+                target: 'خ',
+                position: 'isolated',
+                transliteration: 'shaykhun',
+                translation: 'elder',
+                targetName: 'Khāʾ (isolated)'
+            },
+
+            // د-ذ-ر-ز family  
+            {
+                arabic: 'دِينٌ',
+                target: 'د',
+                position: 'initial',
+                transliteration: 'dīnun',
+                translation: 'religion',
+                targetName: 'Dāl (initial)'
+            },
+            {
+                arabic: 'عِنْدَ',
+                target: 'د',
+                position: 'medial',
+                transliteration: 'ʿinda',
+                translation: 'with/at',
+                targetName: 'Dāl (medial)'
+            },
+            {
+                arabic: 'عَبْدٍ',
+                target: 'د',
+                position: 'final',
+                transliteration: 'ʿabdin',
+                translation: 'servant',
+                targetName: 'Dāl (final)'
+            },
+            {
+                arabic: 'أَحَدٌ',
+                target: 'د',
+                position: 'isolated',
+                transliteration: 'aḥadun',
+                translation: 'one/anyone',
+                targetName: 'Dāl (isolated)'
+            },
+
+            {
+                arabic: 'ذَلِكَ',
+                target: 'ذ',
+                position: 'initial',
+                transliteration: 'dhālika',
+                translation: 'that',
+                targetName: 'Dhāl (initial)'
+            },
+            {
+                arabic: 'إِذَا',
+                target: 'ذ',
+                position: 'medial',
+                transliteration: 'idhā',
+                translation: 'when/if',
+                targetName: 'Dhāl (medial)'
+            },
+            {
+                arabic: 'عَاذَ',
+                target: 'ذ',
+                position: 'final',
+                transliteration: 'ʿādha',
+                translation: 'he sought refuge',
+                targetName: 'Dhāl (final)'
+            },
+            {
+                arabic: 'مُنْذُ',
+                target: 'ذ',
+                position: 'isolated',
+                transliteration: 'mundhu',
+                translation: 'since',
+                targetName: 'Dhāl (isolated)'
+            },
+
+            {
+                arabic: 'رَبُّ',
+                target: 'ر',
+                position: 'initial',
+                transliteration: 'rabbu',
+                translation: 'Lord',
+                targetName: 'Rāʾ (initial)'
+            },
+            {
+                arabic: 'قُرْآنٌ',
+                target: 'ر',
+                position: 'medial',
+                transliteration: 'qurʾānun',
+                translation: 'Quran',
+                targetName: 'Rāʾ (medial)'
+            },
+            {
+                arabic: 'النَّارِ',
+                target: 'ر',
+                position: 'final',
+                transliteration: 'an-nāri',
+                translation: 'the fire',
+                targetName: 'Rāʾ (final)'
+            },
+            {
+                arabic: 'نُورٌ',
+                target: 'ر',
+                position: 'isolated',
+                transliteration: 'nūrun',
+                translation: 'light',
+                targetName: 'Rāʾ (isolated)'
+            },
+
+            {
+                arabic: 'زَكَاةٌ',
+                target: 'ز',
+                position: 'initial',
+                transliteration: 'zakātun',
+                translation: 'charity/purification',
+                targetName: 'Zāy (initial)'
+            },
+            {
+                arabic: 'عَزِيزٌ',
+                target: 'ز',
+                position: 'medial',
+                transliteration: 'ʿazīzun',
+                translation: 'mighty/dear',
+                targetName: 'Zāy (medial)'
+            },
+            {
+                arabic: 'فَازَ',
+                target: 'ز',
+                position: 'final',
+                transliteration: 'fāza',
+                translation: 'he succeeded',
+                targetName: 'Zāy (final)'
+            },
+            {
+                arabic: 'رِزْقٌ',
+                target: 'ز',
+                position: 'isolated',
+                transliteration: 'rizqun',
+                translation: 'provision',
+                targetName: 'Zāy (isolated)'
+            },
+
+            // س-ش family
+            {
+                arabic: 'سَلَامٌ',
+                target: 'س',
+                position: 'initial',
+                transliteration: 'salāmun',
+                translation: 'peace',
+                targetName: 'Sīn (initial)'
+            },
+            {
+                arabic: 'مُسْلِمٌ',
+                target: 'س',
+                position: 'medial',
+                transliteration: 'muslimun',
+                translation: 'Muslim',
+                targetName: 'Sīn (medial)'
+            },
+            {
+                arabic: 'النَّاسِ',
+                target: 'س',
+                position: 'final',
+                transliteration: 'an-nāsi',
+                translation: 'the people',
+                targetName: 'Sīn (final)'
+            },
+            {
+                arabic: 'خَمْسٌ',
+                target: 'س',
+                position: 'isolated',
+                transliteration: 'khamsun',
+                translation: 'five',
+                targetName: 'Sīn (isolated)'
+            },
+
+            {
+                arabic: 'شَهِدَ',
+                target: 'ش',
+                position: 'initial',
+                transliteration: 'shahida',
+                translation: 'he witnessed',
+                targetName: 'Shīn (initial)'
+            },
+            {
+                arabic: 'مَشَاءَ',
+                target: 'ش',
+                position: 'medial',
+                transliteration: 'mashāʾa',
+                translation: 'he willed',
+                targetName: 'Shīn (medial)'
+            },
+            {
+                arabic: 'الْعَرْشِ',
+                target: 'ش',
+                position: 'final',
+                transliteration: 'al-ʿarshi',
+                translation: 'the throne',
+                targetName: 'Shīn (final)'
+            },
+            {
+                arabic: 'وَحْشٌ',
+                target: 'ش',
+                position: 'isolated',
+                transliteration: 'waḥshun',
+                translation: 'wild beast',
+                targetName: 'Shīn (isolated)'
+            },
+
+            // ص-ض family
+            {
+                arabic: 'صَلَاةٌ',
+                target: 'ص',
+                position: 'initial',
+                transliteration: 'ṣalātun',
+                translation: 'prayer',
+                targetName: 'Ṣād (initial)'
+            },
+            {
+                arabic: 'أَصْحَابُ',
+                target: 'ص',
+                position: 'medial',
+                transliteration: 'aṣḥābu',
+                translation: 'companions',
+                targetName: 'Ṣād (medial)'
+            },
+            {
+                arabic: 'خَالِصٌ',
+                target: 'ص',
+                position: 'final',
+                transliteration: 'khāliṣun',
+                translation: 'pure/sincere',
+                targetName: 'Ṣād (final)'
+            },
+            {
+                arabic: 'قِصَصٌ',
+                target: 'ص',
+                position: 'isolated',
+                transliteration: 'qiṣaṣun',
+                translation: 'stories',
+                targetName: 'Ṣād (isolated)'
+            },
+
+            {
+                arabic: 'ضَلَّ',
+                target: 'ض',
+                position: 'initial',
+                transliteration: 'ḍalla',
+                translation: 'he went astray',
+                targetName: 'Ḍād (initial)'
+            },
+            {
+                arabic: 'مُضْطَرٌّ',
+                target: 'ض',
+                position: 'medial',
+                transliteration: 'muḍṭarrun',
+                translation: 'compelled',
+                targetName: 'Ḍād (medial)'
+            },
+            {
+                arabic: 'أَرْضٍ',
+                target: 'ض',
+                position: 'final',
+                transliteration: 'arḍin',
+                translation: 'earth/land',
+                targetName: 'Ḍād (final)'
+            },
+            {
+                arabic: 'بَعْضٌ',
+                target: 'ض',
+                position: 'isolated',
+                transliteration: 'baʿḍun',
+                translation: 'some',
+                targetName: 'Ḍād (isolated)'
+            },
+
+            // ط-ظ family
+            {
+                arabic: 'طَيِّبٌ',
+                target: 'ط',
+                position: 'initial',
+                transliteration: 'ṭayyibun',
+                translation: 'good/pure',
+                targetName: 'Ṭāʾ (initial)'
+            },
+            {
+                arabic: 'مُسْتَطِيعٌ',
+                target: 'ط',
+                position: 'medial',
+                transliteration: 'mustaṭīʿun',
+                translation: 'able',
+                targetName: 'Ṭāʾ (medial)'
+            },
+            {
+                arabic: 'خَطَأً',
+                target: 'ط',
+                position: 'final',
+                transliteration: 'khaṭaʾan',
+                translation: 'mistake',
+                targetName: 'Ṭāʾ (final)'
+            },
+            {
+                arabic: 'قِطٌّ',
+                target: 'ط',
+                position: 'isolated',
+                transliteration: 'qiṭṭun',
+                translation: 'cat',
+                targetName: 'Ṭāʾ (isolated)'
+            },
+
+            {
+                arabic: 'ظَلَمَ',
+                target: 'ظ',
+                position: 'initial',
+                transliteration: 'ẓalama',
+                translation: 'he wronged',
+                targetName: 'Ẓāʾ (initial)'
+            },
+            {
+                arabic: 'مَظْلُومٌ',
+                target: 'ظ',
+                position: 'medial',
+                transliteration: 'maẓlūmun',
+                translation: 'wronged',
+                targetName: 'Ẓāʾ (medial)'
+            },
+            {
+                arabic: 'حَافِظٌ',
+                target: 'ظ',
+                position: 'final',
+                transliteration: 'ḥāfiẓun',
+                translation: 'guardian',
+                targetName: 'Ẓāʾ (final)'
+            },
+            {
+                arabic: 'لَفْظٌ',
+                target: 'ظ',
+                position: 'isolated',
+                transliteration: 'lafẓun',
+                translation: 'word/pronunciation',
+                targetName: 'Ẓāʾ (isolated)'
+            },
+
+            // ع-غ family
+            {
+                arabic: 'عَبْدٌ',
+                target: 'ع',
+                position: 'initial',
+                transliteration: 'ʿabdun',
+                translation: 'servant',
+                targetName: 'ʿAyn (initial)'
+            },
+            {
+                arabic: 'سَمِعَ',
+                target: 'ع',
+                position: 'medial',
+                transliteration: 'samiʿa',
+                translation: 'he heard',
+                targetName: 'ʿAyn (medial)'
+            },
+            {
+                arabic: 'جَمِيعٌ',
+                target: 'ع',
+                position: 'final',
+                transliteration: 'jamīʿun',
+                translation: 'all',
+                targetName: 'ʿAyn (final)'
+            },
+            {
+                arabic: 'رَفْعٌ',
+                target: 'ع',
+                position: 'isolated',
+                transliteration: 'rafʿun',
+                translation: 'raising',
+                targetName: 'ʿAyn (isolated)'
+            },
+
+            {
+                arabic: 'غَفُورٌ',
+                target: 'غ',
+                position: 'initial',
+                transliteration: 'ghafūrun',
+                translation: 'forgiving',
+                targetName: 'Ghayn (initial)'
+            },
+            {
+                arabic: 'مَغْفِرَةٌ',
+                target: 'غ',
+                position: 'medial',
+                transliteration: 'maghfiratun',
+                translation: 'forgiveness',
+                targetName: 'Ghayn (medial)'
+            },
+            {
+                arabic: 'بَلَاغٌ',
+                target: 'غ',
+                position: 'final',
+                transliteration: 'balāghun',
+                translation: 'message/eloquence',
+                targetName: 'Ghayn (final)'
+            },
+            {
+                arabic: 'صِيَغٌ',
+                target: 'غ',
+                position: 'isolated',
+                transliteration: 'ṣiyaghun',
+                translation: 'forms',
+                targetName: 'Ghayn (isolated)'
+            },
+
+            // ف-ق family
+            {
+                arabic: 'فَاتِحَةٌ',
+                target: 'ف',
+                position: 'initial',
+                transliteration: 'fātiḥatun',
+                translation: 'opening',
+                targetName: 'Fāʾ (initial)'
+            },
+            {
+                arabic: 'مُنَافِقٌ',
+                target: 'ف',
+                position: 'medial',
+                transliteration: 'munāfiqun',
+                translation: 'hypocrite',
+                targetName: 'Fāʾ (medial)'
+            },
+            {
+                arabic: 'يُوسُفَ',
+                target: 'ف',
+                position: 'final',
+                transliteration: 'Yūsufa',
+                translation: 'Joseph',
+                targetName: 'Fāʾ (final)'
+            },
+            {
+                arabic: 'عَفْوٌ',
+                target: 'ف',
+                position: 'isolated',
+                transliteration: 'ʿafwun',
+                translation: 'pardon',
+                targetName: 'Fāʾ (isolated)'
+            },
+
+            {
+                arabic: 'قُرْآنٌ',
+                target: 'ق',
+                position: 'initial',
+                transliteration: 'qurʾānun',
+                translation: 'Quran',
+                targetName: 'Qāf (initial)'
+            },
+            {
+                arabic: 'مُتَّقِينَ',
+                target: 'ق',
+                position: 'medial',
+                transliteration: 'muttaqīna',
+                translation: 'the pious',
+                targetName: 'Qāf (medial)'
+            },
+            {
+                arabic: 'خَلَقَ',
+                target: 'ق',
+                position: 'final',
+                transliteration: 'khalaqa',
+                translation: 'he created',
+                targetName: 'Qāf (final)'
+            },
+            {
+                arabic: 'حَقٌّ',
+                target: 'ق',
+                position: 'isolated',
+                transliteration: 'ḥaqqun',
+                translation: 'truth',
+                targetName: 'Qāf (isolated)'
+            },
+
+            // ك-ل family
+            {
+                arabic: 'كِتَابٌ',
+                target: 'ك',
+                position: 'initial',
+                transliteration: 'kitābun',
+                translation: 'book',
+                targetName: 'Kāf (initial)'
+            },
+            {
+                arabic: 'مَكَّةَ',
+                target: 'ك',
+                position: 'medial',
+                transliteration: 'Makkata',
+                translation: 'Mecca',
+                targetName: 'Kāf (medial)'
+            },
+            {
+                arabic: 'مَلَكٍ',
+                target: 'ك',
+                position: 'final',
+                transliteration: 'malakin',
+                translation: 'angel',
+                targetName: 'Kāf (final)'
+            },
+            {
+                arabic: 'ذَلِكَ',
+                target: 'ك',
+                position: 'isolated',
+                transliteration: 'dhālika',
+                translation: 'that',
+                targetName: 'Kāf (isolated)'
+            },
+
+            {
+                arabic: 'لَا',
+                target: 'ل',
+                position: 'initial',
+                transliteration: 'lā',
+                translation: 'no/not',
+                targetName: 'Lām (initial)'
+            },
+            {
+                arabic: 'صَلَاةٌ',
+                target: 'ل',
+                position: 'medial',
+                transliteration: 'ṣalātun',
+                translation: 'prayer',
+                targetName: 'Lām (medial)'
+            },
+            {
+                arabic: 'قُلْ',
+                target: 'ل',
+                position: 'final',
+                transliteration: 'qul',
+                translation: 'say',
+                targetName: 'Lām (final)'
+            },
+            {
+                arabic: 'كُلُّ',
+                target: 'ل',
+                position: 'isolated',
+                transliteration: 'kullu',
+                translation: 'all',
+                targetName: 'Lām (isolated)'
+            },
+
+            // م-ن family
+            {
+                arabic: 'مُؤْمِنٌ',
+                target: 'م',
+                position: 'initial',
+                transliteration: 'muʾminun',
+                translation: 'believer',
+                targetName: 'Mīm (initial)'
+            },
+            {
+                arabic: 'رَحْمَةٌ',
+                target: 'م',
+                position: 'medial',
+                transliteration: 'raḥmatun',
+                translation: 'mercy',
+                targetName: 'Mīm (medial)'
+            },
+            {
+                arabic: 'إِبْرَاهِيمَ',
+                target: 'م',
+                position: 'final',
+                transliteration: 'Ibrāhīma',
+                translation: 'Abraham',
+                targetName: 'Mīm (final)'
+            },
+            {
+                arabic: 'يَوْمٌ',
+                target: 'م',
+                position: 'isolated',
+                transliteration: 'yawmun',
+                translation: 'day',
+                targetName: 'Mīm (isolated)'
+            },
+
+            {
+                arabic: 'نُورٌ',
+                target: 'ن',
+                position: 'initial',
+                transliteration: 'nūrun',
+                translation: 'light',
+                targetName: 'Nūn (initial)'
+            },
+            {
+                arabic: 'مُؤْمِنُونَ',
+                target: 'ن',
+                position: 'medial',
+                transliteration: 'muʾminūna',
+                translation: 'believers',
+                targetName: 'Nūn (medial)'
+            },
+            {
+                arabic: 'الرَّحْمَنِ',
+                target: 'ن',
+                position: 'final',
+                transliteration: 'ar-raḥmāni',
+                translation: 'the Merciful',
+                targetName: 'Nūn (final)'
+            },
+            {
+                arabic: 'مِنْ',
+                target: 'ن',
+                position: 'isolated',
+                transliteration: 'min',
+                translation: 'from',
+                targetName: 'Nūn (isolated)'
+            },
+
+            // ه-و family
+            {
+                arabic: 'هُوَ',
+                target: 'ه',
+                position: 'initial',
+                transliteration: 'huwa',
+                translation: 'he',
+                targetName: 'Hāʾ (initial)'
+            },
+            {
+                arabic: 'إِلَهٌ',
+                target: 'ه',
+                position: 'medial',
+                transliteration: 'ilāhun',
+                translation: 'god',
+                targetName: 'Hāʾ (medial)'
+            },
+            {
+                arabic: 'ٱللَّهُ',
+                target: 'ه',
+                position: 'final',
+                transliteration: 'Allāhu',
+                translation: 'Allah',
+                targetName: 'Hāʾ (final)'
+            },
+            {
+                arabic: 'فِيهِ',
+                target: 'ه',
+                position: 'isolated',
+                transliteration: 'fīhi',
+                translation: 'in it',
+                targetName: 'Hāʾ (isolated)'
+            },
+
+            {
+                arabic: 'وَلَدٌ',
+                target: 'و',
+                position: 'initial',
+                transliteration: 'waladun',
+                translation: 'child',
+                targetName: 'Wāw (initial)'
+            },
+            {
+                arabic: 'دَعْوَةٌ',
+                target: 'و',
+                position: 'medial',
+                transliteration: 'daʿwatun',
+                translation: 'call/prayer',
+                targetName: 'Wāw (medial)'
+            },
+            {
+                arabic: 'يَدْعُو',
+                target: 'و',
+                position: 'final',
+                transliteration: 'yadʿū',
+                translation: 'he calls',
+                targetName: 'Wāw (final)'
+            },
+            {
+                arabic: 'هُوَ',
+                target: 'و',
+                position: 'isolated',
+                transliteration: 'huwa',
+                translation: 'he',
+                targetName: 'Wāw (isolated)'
+            },
+
+            // ي family
+            {
+                arabic: 'يَوْمٌ',
+                target: 'ي',
+                position: 'initial',
+                transliteration: 'yawmun',
+                translation: 'day',
+                targetName: 'Yāʾ (initial)'
+            },
+            {
+                arabic: 'الْغَيْبِ',
+                target: 'ي',
+                position: 'medial',
+                transliteration: 'al-ghaybi',
+                translation: 'the unseen',
+                targetName: 'Yāʾ (medial)'
+            },
+            {
+                arabic: 'الَّذِي',
+                target: 'ي',
+                position: 'final',
+                transliteration: 'alladhī',
+                translation: 'who/which',
+                targetName: 'Yāʾ (final)'
+            },
+            {
+                arabic: 'فِي',
+                target: 'ي',
+                position: 'isolated',
+                transliteration: 'fī',
+                translation: 'in',
+                targetName: 'Yāʾ (isolated)'
+            },
+
+            // Diacritics
+            {
+                arabic: 'كَتَبَ',
+                target: 'َ',
+                position: 'diacritic',
+                transliteration: 'kataba',
+                translation: 'he wrote',
+                targetName: 'Fatḥa (a)'
+            },
+            {
+                arabic: 'قُلْ',
+                target: 'ُ',
+                position: 'diacritic',
+                transliteration: 'qul',
+                translation: 'say',
+                targetName: 'Ḍamma (u)'
+            },
+            {
+                arabic: 'بِسْمِ',
+                target: 'ِ',
+                position: 'diacritic',
+                transliteration: 'bismi',
+                translation: 'in the name of',
+                targetName: 'Kasra (i)'
+            },
+            {
+                arabic: 'قُلْ',
+                target: 'ْ',
+                position: 'diacritic',
+                transliteration: 'qul',
+                translation: 'say',
+                targetName: 'Sukūn (no vowel)'
+            },
+            {
+                arabic: 'رَبِّ',
+                target: 'ّ',
+                position: 'diacritic',
+                transliteration: 'rabbi',
+                translation: 'my Lord',
+                targetName: 'Shadda (doubling)'
+            },
+            {
+                arabic: 'كِتَابًا',
+                target: 'ً',
+                position: 'diacritic',
+                transliteration: 'kitāban',
+                translation: 'a book (acc.)',
+                targetName: 'Tanwīn fatḥ (an)'
+            },
+            {
+                arabic: 'كِتَابٌ',
+                target: 'ٌ',
+                position: 'diacritic',
+                transliteration: 'kitābun',
+                translation: 'a book (nom.)',
+                targetName: 'Tanwīn ḍamm (un)'
+            },
+            {
+                arabic: 'كِتَابٍ',
+                target: 'ٍ',
+                position: 'diacritic',
+                transliteration: 'kitābin',
+                translation: 'a book (gen.)',
+                targetName: 'Tanwīn kasr (in)'
+            }
+        ];
+
+        let currentIndex = 0;
+        let isFlipped = false;
+
+        // Create navigation
+        function createNavigation() {
+            const navContent = document.getElementById('navContent');
             
-            if (window.pageYOffset > tocBottom) {
-                stickyNav.classList.add('visible');
-                document.body.classList.add('nav-visible');
+            // Letter families
+            const letterFamilies = [
+                { name: 'Alif', letters: ['ا'] },
+                { name: 'ب-ت-ث', letters: ['ب', 'ت', 'ث'] },
+                { name: 'ج-ح-خ', letters: ['ج', 'ح', 'خ'] },
+                { name: 'د-ذ-ر-ز', letters: ['د', 'ذ', 'ر', 'ز'] },
+                { name: 'س-ش', letters: ['س', 'ش'] },
+                { name: 'ص-ض', letters: ['ص', 'ض'] },
+                { name: 'ط-ظ', letters: ['ط', 'ظ'] },
+                { name: 'ع-غ', letters: ['ع', 'غ'] },
+                { name: 'ف-ق', letters: ['ف', 'ق'] },
+                { name: 'ك-ل', letters: ['ك', 'ل'] },
+                { name: 'م-ن', letters: ['م', 'ن'] },
+                { name: 'ه-و', letters: ['ه', 'و'] },
+                { name: 'ي', letters: ['ي'] }
+            ];
+
+            letterFamilies.forEach(family => {
+                const group = document.createElement('div');
+                group.className = 'nav-group';
+                
+                const label = document.createElement('div');
+                label.className = 'nav-group-label';
+                label.textContent = family.name;
+                group.appendChild(label);
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'nav-buttons';
+                
+                family.letters.forEach(letter => {
+                    const btn = document.createElement('button');
+                    btn.className = 'nav-btn';
+                    btn.textContent = letter;
+                    btn.onclick = () => navigateToLetter(letter);
+                    buttons.appendChild(btn);
+                });
+                
+                group.appendChild(buttons);
+                navContent.appendChild(group);
+            });
+
+            // Diacritics section
+            const diacriticsGroup = document.createElement('div');
+            diacriticsGroup.className = 'nav-group';
+            
+            const diacriticsLabel = document.createElement('div');
+            diacriticsLabel.className = 'nav-group-label';
+            diacriticsLabel.textContent = 'Diacritics';
+            diacriticsGroup.appendChild(diacriticsLabel);
+            
+            const diacriticsButtons = document.createElement('div');
+            diacriticsButtons.className = 'nav-buttons';
+            
+            const diacritics = [
+                { symbol: 'َ', name: 'fatḥa' },
+                { symbol: 'ُ', name: 'ḍamma' },
+                { symbol: 'ِ', name: 'kasra' },
+                { symbol: 'ْ', name: 'sukūn' },
+                { symbol: 'ّ', name: 'shadda' },
+                { symbol: 'ً', name: 'tanwīn' }
+            ];
+
+            diacritics.forEach(diacritic => {
+                const btn = document.createElement('button');
+                btn.className = 'nav-btn diacritic-btn';
+                btn.textContent = diacritic.name;
+                btn.onclick = () => navigateToDiacritic(diacritic.symbol);
+                diacriticsButtons.appendChild(btn);
+            });
+            
+            diacriticsGroup.appendChild(diacriticsButtons);
+            navContent.appendChild(diacriticsGroup);
+        }
+
+        function navigateToLetter(letter) {
+            const index = flashcards.findIndex(card => card.target === letter);
+            if (index !== -1) {
+                currentIndex = index;
+                updateCard();
+                updateNavigation();
+            }
+        }
+
+        function navigateToDiacritic(diacritic) {
+            const index = flashcards.findIndex(card => card.target === diacritic);
+            if (index !== -1) {
+                currentIndex = index;
+                updateCard();
+                updateNavigation();
+            }
+        }
+
+        function updateNavigation() {
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+            
+            const currentCard = flashcards[currentIndex];
+            navBtns.forEach(btn => {
+                if (btn.textContent === currentCard.target || 
+                    (currentCard.position === 'diacritic' && btn.textContent.includes(currentCard.targetName.split(' ')[0].toLowerCase()))) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function updateCard() {
+            const card = flashcards[currentIndex];
+            const arabicText = document.getElementById('arabicText');
+            const targetDisplay = document.getElementById('targetDisplay');
+            const targetName = document.getElementById('targetName');
+            const transliteration = document.getElementById('transliteration');
+            const translation = document.getElementById('translation');
+            const currentCardSpan = document.getElementById('currentCard');
+            const totalCardsSpan = document.getElementById('totalCards');
+
+            // Highlight target letter/diacritic in red
+            let highlightedText = card.arabic;
+            if (card.position === 'diacritic') {
+                highlightedText = card.arabic.replace(new RegExp(card.target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), 
+                    `<span class="target-letter">${card.target}</span>`);
             } else {
-                stickyNav.classList.remove('visible');
-                document.body.classList.remove('nav-visible');
+                highlightedText = card.arabic.replace(new RegExp(card.target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), 
+                    `<span class="target-letter">${card.target}</span>`);
+            }
+            
+            arabicText.innerHTML = highlightedText;
+            targetDisplay.textContent = card.target;
+            targetName.textContent = card.targetName;
+            transliteration.textContent = card.transliteration;
+            translation.textContent = card.translation;
+            currentCardSpan.textContent = currentIndex + 1;
+            totalCardsSpan.textContent = flashcards.length;
+
+            // Reset flip state
+            isFlipped = false;
+            document.getElementById('card').classList.remove('flipped');
+        }
+
+        function flipCard() {
+            const card = document.getElementById('card');
+            isFlipped = !isFlipped;
+            card.classList.toggle('flipped', isFlipped);
+        }
+
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % flashcards.length;
+            updateCard();
+            updateNavigation();
+        }
+
+        function prevCard() {
+            currentIndex = (currentIndex - 1 + flashcards.length) % flashcards.length;
+            updateCard();
+            updateNavigation();
+        }
+
+        // Event listeners
+        document.getElementById('flashcard').addEventListener('click', flipCard);
+        document.getElementById('nextBtn').addEventListener('click', nextCard);
+        document.getElementById('prevBtn').addEventListener('click', prevCard);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case ' ':
+                case 'Enter':
+                    e.preventDefault();
+                    flipCard();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    nextCard();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    prevCard();
+                    break;
             }
         });
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    const offset = document.querySelector('.sticky-nav.visible') ? 70 : 20;
-                    const targetPosition = target.offsetTop - offset;
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
+        // Touch gestures for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
         });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > 50) { // Minimum swipe distance
+                if (diff > 0) {
+                    nextCard(); // Swipe left = next
+                } else {
+                    prevCard(); // Swipe right = previous
+                }
+            }
+        });
+
+        // Initialize
+        createNavigation();
+        updateCard();
+        updateNavigation();
     </script>
-
 </body>
-</html>"><span class="target">أَ</span>نْتَ</div>
-                    <div class="transliteration">'anta</div>
-                    <div class="translation">you (masculine)</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">أُ</span>مٌّ</div>
-                    <div class="transliteration">'ummun</div>
-                    <div class="translation">mother</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">سَ<span class="target">أَ</span>لَ</div>
-                    <div class="transliteration">sa'ala</div>
-                    <div class="translation">he asked</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">بَدَ<span class="target">أَ</span></div>
-                    <div class="transliteration">bada'a</div>
-                    <div class="translation">he began</div>
-                </div>
-            </div>
-
-            <h4>إ (Alif with Hamza below)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">إِ</span>لَى</div>
-                    <div class="transliteration">'ilā</div>
-                    <div class="translation">to, towards</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">إِ</span>يمَانٌ</div>
-                    <div class="transliteration">'īmānun</div>
-                    <div class="translation">faith</div>
-                </div>
-            </div>
-
-            <h4>آ (Alif with Madda)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">آ</span>مَنَ</div>
-                    <div class="transliteration">'āmana</div>
-                    <div class="translation">he believed</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">آ</span>يَةٌ</div>
-                    <div class="transliteration">'āyatun</div>
-                    <div class="translation">sign, verse</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="ba-family" class="letter-family">
-            <h3>Ba Family (ب، ت، ث، ن، ي)</h3>
-            
-            <h4>ب (Ba)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">بٌ</span></div>
-                    <div class="transliteration">bun</div>
-                    <div class="translation">letter B</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">بَ</span>يْتٌ</div>
-                    <div class="transliteration">baytun</div>
-                    <div class="translation">house</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">كِتَا<span class="target">بٌ</span></div>
-                    <div class="transliteration">kitābun</div>
-                    <div class="translation">book</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">حُ<span class="target">بٌ</span></div>
-                    <div class="transliteration">ḥubbun</div>
-                    <div class="translation">love</div>
-                </div>
-            </div>
-
-            <h4>ت (Ta)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">تٌ</span></div>
-                    <div class="transliteration">tun</div>
-                    <div class="translation">letter T</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">تُ</span>رَابٌ</div>
-                    <div class="transliteration">turābun</div>
-                    <div class="translation">dust</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">كِ<span class="target">تَ</span>ابٌ</div>
-                    <div class="transliteration">kitābun</div>
-                    <div class="translation">book</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">بَيْ<span class="target">تٌ</span></div>
-                    <div class="transliteration">baytun</div>
-                    <div class="translation">house</div>
-                </div>
-            </div>
-
-            <h4>ث (Tha)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">ثٌ</span></div>
-                    <div class="transliteration">thun</div>
-                    <div class="translation">letter Th</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">ثَ</span>لَاثَةٌ</div>
-                    <div class="transliteration">thalāthatun</div>
-                    <div class="translation">three</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">مِ<span class="target">ثْ</span>لٌ</div>
-                    <div class="transliteration">mithlun</div>
-                    <div class="translation">example</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">حَدِي<span class="target">ثٌ</span></div>
-                    <div class="transliteration">ḥadīthun</div>
-                    <div class="translation">tradition</div>
-                </div>
-            </div>
-
-            <h4>ن (Nun)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">نٌ</span></div>
-                    <div class="transliteration">nun</div>
-                    <div class="translation">letter N</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">نُ</span>ورٌ</div>
-                    <div class="transliteration">nūrun</div>
-                    <div class="translation">light</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">جَ<span class="target">نَّ</span>ةٌ</div>
-                    <div class="transliteration">jannatun</div>
-                    <div class="translation">paradise</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">إِيمَا<span class="target">نٌ</span></div>
-                    <div class="transliteration">'īmānun</div>
-                    <div class="translation">faith</div>
-                </div>
-            </div>
-
-            <h4>ي (Ya)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">يٌ</span></div>
-                    <div class="transliteration">yun</div>
-                    <div class="translation">letter Y</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">يَ</span>وْمٌ</div>
-                    <div class="transliteration">yawmun</div>
-                    <div class="translation">day</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">بَ<span class="target">يْ</span>تٌ</div>
-                    <div class="transliteration">baytun</div>
-                    <div class="translation">house</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">فِ<span class="target">ي</span></div>
-                    <div class="transliteration">fī</div>
-                    <div class="translation">in</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="jim-family" class="letter-family">
-            <h3>Jim Family (ج، ح، خ)</h3>
-            
-            <h4>ج (Jim)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">جٌ</span></div>
-                    <div class="transliteration">jun</div>
-                    <div class="translation">letter J</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">جَ</span>نَّةٌ</div>
-                    <div class="transliteration">jannatun</div>
-                    <div class="translation">paradise</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">مَسْ<span class="target">جِ</span>دٌ</div>
-                    <div class="transliteration">masjidun</div>
-                    <div class="translation">mosque</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">حَا<span class="target">جٌ</span></div>
-                    <div class="transliteration">ḥājjun</div>
-                    <div class="translation">pilgrim</div>
-                </div>
-            </div>
-
-            <h4>ح (Ha)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">حٌ</span></div>
-                    <div class="transliteration">ḥun</div>
-                    <div class="translation">letter H</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">حَ</span>قٌّ</div>
-                    <div class="transliteration">ḥaqqun</div>
-                    <div class="translation">truth</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">رَ<span class="target">حْ</span>مَةٌ</div>
-                    <div class="transliteration">raḥmatun</div>
-                    <div class="translation">mercy</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">رُو<span class="target">حٌ</span></div>
-                    <div class="transliteration">rūḥun</div>
-                    <div class="translation">spirit</div>
-                </div>
-            </div>
-
-            <h4>خ (Kha)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">خٌ</span></div>
-                    <div class="transliteration">khun</div>
-                    <div class="translation">letter Kh</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">خَ</span>يْرٌ</div>
-                    <div class="transliteration">khayrun</div>
-                    <div class="translation">good</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">أَ<span class="target">خٌ</span></div>
-                    <div class="transliteration">'akhun</div>
-                    <div class="translation">brother</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">تَارِي<span class="target">خٌ</span></div>
-                    <div class="transliteration">tārīkhun</div>
-                    <div class="translation">history</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="dal-family" class="letter-family">
-            <h3>Dal Family (د، ذ) - Non-connecting</h3>
-            
-            <h4>د (Dal)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated / Final</div>
-                    <div class="arabic-text"><span class="target">دٌ</span></div>
-                    <div class="transliteration">dun</div>
-                    <div class="translation">letter D</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial / Medial</div>
-                    <div class="arabic-text"><span class="target">دِ</span>ينٌ</div>
-                    <div class="transliteration">dīnun</div>
-                    <div class="translation">religion</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">After connection</div>
-                    <div class="arabic-text">مَسْجِ<span class="target">دٌ</span></div>
-                    <div class="transliteration">masjidun</div>
-                    <div class="translation">mosque</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Between letters</div>
-                    <div class="arabic-text">مُحَمَّ<span class="target">دٌ</span></div>
-                    <div class="transliteration">muḥammadun</div>
-                    <div class="translation">Muhammad</div>
-                </div>
-            </div>
-
-            <h4>ذ (Dhal)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated / Final</div>
-                    <div class="arabic-text"><span class="target">ذٌ</span></div>
-                    <div class="transliteration">dhun</div>
-                    <div class="translation">letter Dh</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial / Medial</div>
-                    <div class="arabic-text"><span class="target">ذِ</span>كْرٌ</div>
-                    <div class="transliteration">dhikrun</div>
-                    <div class="translation">remembrance</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">After connection</div>
-                    <div class="arabic-text">أُسْتَا<span class="target">ذٌ</span></div>
-                    <div class="transliteration">'ustādhun</div>
-                    <div class="translation">teacher</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Between letters</div>
-                    <div class="arabic-text">إِ<span class="target">ذْ</span>نٌ</div>
-                    <div class="transliteration">'idhnun</div>
-                    <div class="translation">permission</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="ra-family" class="letter-family">
-            <h3>Ra Family (ر، ز) - Non-connecting</h3>
-            
-            <h4>ر (Ra)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated / Final</div>
-                    <div class="arabic-text"><span class="target">رٌ</span></div>
-                    <div class="transliteration">run</div>
-                    <div class="translation">letter R</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial / Medial</div>
-                    <div class="arabic-text"><span class="target">رَ</span>حْمَةٌ</div>
-                    <div class="transliteration">raḥmatun</div>
-                    <div class="translation">mercy</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">After connection</div>
-                    <div class="arabic-text">نُو<span class="target">رٌ</span></div>
-                    <div class="transliteration">nūrun</div>
-                    <div class="translation">light</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Between letters</div>
-                    <div class="arabic-text">خَيْ<span class="target">رٌ</span></div>
-                    <div class="transliteration">khayrun</div>
-                    <div class="translation">good</div>
-                </div>
-            </div>
-
-            <h4>ز (Zay)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated / Final</div>
-                    <div class="arabic-text"><span class="target">زٌ</span></div>
-                    <div class="transliteration">zun</div>
-                    <div class="translation">letter Z</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial / Medial</div>
-                    <div class="arabic-text"><span class="target">زَ</span>كَاةٌ</div>
-                    <div class="transliteration">zakātun</div>
-                    <div class="translation">charity</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">After connection</div>
-                    <div class="arabic-text">عَزِي<span class="target">زٌ</span></div>
-                    <div class="transliteration">'azīzun</div>
-                    <div class="translation">mighty</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Between letters</div>
-                    <div class="arabic-text">مُعْجِ<span class="target">زٌ</span></div>
-                    <div class="transliteration">mu'jizun</div>
-                    <div class="translation">miracle</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="sin-family" class="letter-family">
-            <h3>Sin Family (س، ش)</h3>
-            
-            <h4>س (Sin)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">سٌ</span></div>
-                    <div class="transliteration">sun</div>
-                    <div class="translation">letter S</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">سَ</span>لَامٌ</div>
-                    <div class="transliteration">salāmun</div>
-                    <div class="translation">peace</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">مَ<span class="target">سْ</span>جِدٌ</div>
-                    <div class="transliteration">masjidun</div>
-                    <div class="translation">mosque</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">نَا<span class="target">سٌ</span></div>
-                    <div class="transliteration">nāsun</div>
-                    <div class="translation">people</div>
-                </div>
-            </div>
-
-            <h4>ش (Shin)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">شٌ</span></div>
-                    <div class="transliteration">shun</div>
-                    <div class="translation">letter Sh</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">شَ</span>هِيدٌ</div>
-                    <div class="transliteration">shahīdun</div>
-                    <div class="translation">witness</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">عَ<span class="target">شَ</span>رَةٌ</div>
-                    <div class="transliteration">'asharatun</div>
-                    <div class="translation">ten</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">عَرْ<span class="target">شٌ</span></div>
-                    <div class="transliteration">'arshun</div>
-                    <div class="translation">throne</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="sad-family" class="letter-family">
-            <h3>Sad Family (ص، ض)</h3>
-            
-            <h4>ص (Sad)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">صٌ</span></div>
-                    <div class="transliteration">ṣun</div>
-                    <div class="translation">letter S (emphatic)</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">صَ</span>لَاةٌ</div>
-                    <div class="transliteration">ṣalātun</div>
-                    <div class="translation">prayer</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">نَ<span class="target">صْ</span>رٌ</div>
-                    <div class="transliteration">naṣrun</div>
-                    <div class="translation">victory</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">خَالِ<span class="target">صٌ</span></div>
-                    <div class="transliteration">khāliṣun</div>
-                    <div class="translation">pure</div>
-                </div>
-            </div>
-
-            <h4>ض (Dad)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">ضٌ</span></div>
-                    <div class="transliteration">ḍun</div>
-                    <div class="translation">letter D (emphatic)</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">ضَ</span>لَالٌ</div>
-                    <div class="transliteration">ḍalālun</div>
-                    <div class="translation">misguidance</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">رَمَ<span class="target">ضَ</span>انُ</div>
-                    <div class="transliteration">ramaḍānu</div>
-                    <div class="translation">Ramadan</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">أَرْ<span class="target">ضٌ</span></div>
-                    <div class="transliteration">'arḍun</div>
-                    <div class="translation">earth</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="ta-family" class="letter-family">
-            <h3>Ta Family (ط، ظ)</h3>
-            
-            <h4>ط (Ta - emphatic)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">طٌ</span></div>
-                    <div class="transliteration">ṭun</div>
-                    <div class="translation">letter T (emphatic)</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">طَ</span>عَامٌ</div>
-                    <div class="transliteration">ṭa'āmun</div>
-                    <div class="translation">food</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">مُسْ<span class="target">طَ</span>قِيمٌ</div>
-                    <div class="transliteration">mustaqīmun</div>
-                    <div class="translation">straight</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">صِرَا<span class="target">طٌ</span></div>
-                    <div class="transliteration">ṣirāṭun</div>
-                    <div class="translation">path</div>
-                </div>
-            </div>
-
-            <h4>ظ (Zha)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">ظٌ</span></div>
-                    <div class="transliteration">ẓun</div>
-                    <div class="translation">letter Z (emphatic)</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">ظُ</span>لْمٌ</div>
-                    <div class="transliteration">ẓulmun</div>
-                    <div class="translation">injustice</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">حَ<span class="target">ظٌ</span></div>
-                    <div class="transliteration">ḥaẓẓun</div>
-                    <div class="translation">luck</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">لَفْ<span class="target">ظٌ</span></div>
-                    <div class="transliteration">lafẓun</div>
-                    <div class="translation">word</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="ain-family" class="letter-family">
-            <h3>Ain Family (ع، غ)</h3>
-            
-            <h4>ع (Ain)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">عٌ</span></div>
-                    <div class="transliteration">'un</div>
-                    <div class="translation">letter Ain</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">عَ</span>بْدٌ</div>
-                    <div class="transliteration">'abdun</div>
-                    <div class="translation">servant</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">مَ<span class="target">عَ</span></div>
-                    <div class="transliteration">ma'a</div>
-                    <div class="translation">with</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">سَمِي<span class="target">عٌ</span></div>
-                    <div class="transliteration">samī'un</div>
-                    <div class="translation">hearing</div>
-                </div>
-            </div>
-
-            <h4>غ (Ghayn)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">غٌ</span></div>
-                    <div class="transliteration">ghun</div>
-                    <div class="translation">letter Gh</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">غَ</span>فُورٌ</div>
-                    <div class="transliteration">ghafūrun</div>
-                    <div class="translation">forgiving</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">صَ<span class="target">غِ</span>يرٌ</div>
-                    <div class="transliteration">ṣaghīrun</div>
-                    <div class="translation">small</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">بَالِ<span class="target">غٌ</span></div>
-                    <div class="transliteration">bālighun</div>
-                    <div class="translation">mature</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="fa-family" class="letter-family">
-            <h3>Fa Family (ف، ق)</h3>
-            
-            <h4>ف (Fa)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">فٌ</span></div>
-                    <div class="transliteration">fun</div>
-                    <div class="translation">letter F</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">فِ</span>ي</div>
-                    <div class="transliteration">fī</div>
-                    <div class="translation">in</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">كَا<span class="target">فِ</span>رٌ</div>
-                    <div class="transliteration">kāfirun</div>
-                    <div class="translation">disbeliever</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">خَوْ<span class="target">فٌ</span></div>
-                    <div class="transliteration">khawfun</div>
-                    <div class="translation">fear</div>
-                </div>
-            </div>
-
-            <h4>ق (Qaf)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">قٌ</span></div>
-                    <div class="transliteration">qun</div>
-                    <div class="translation">letter Q</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">قُ</span>رْآنٌ</div>
-                    <div class="transliteration">qur'ānun</div>
-                    <div class="translation">Quran</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">مُؤْمِ<span class="target">نٌ</span></div>
-                    <div class="transliteration">mu'minun</div>
-                    <div class="translation">believer</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">حَ<span class="target">قٌ</span></div>
-                    <div class="transliteration">ḥaqqun</div>
-                    <div class="translation">truth</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="kaf-family" class="letter-family">
-            <h3>Kaf Family (ك، ل)</h3>
-            
-            <h4>ك (Kaf)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">كٌ</span></div>
-                    <div class="transliteration">kun</div>
-                    <div class="translation">letter K</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">كِ</span>تَابٌ</div>
-                    <div class="transliteration">kitābun</div>
-                    <div class="translation">book</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">مَ<span class="target">كَ</span>انٌ</div>
-                    <div class="transliteration">makānun</div>
-                    <div class="translation">place</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">مَلِ<span class="target">كٌ</span></div>
-                    <div class="transliteration">malikun</div>
-                    <div class="translation">king</div>
-                </div>
-            </div>
-
-            <h4>ل (Lam)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">لٌ</span></div>
-                    <div class="transliteration">lun</div>
-                    <div class="translation">letter L</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">لَ</span>يْلَةٌ</div>
-                    <div class="transliteration">laylatun</div>
-                    <div class="translation">night</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">سَ<span class="target">لَ</span>امٌ</div>
-                    <div class="transliteration">salāmun</div>
-                    <div class="translation">peace</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">جَمِي<span class="target">لٌ</span></div>
-                    <div class="transliteration">jamīlun</div>
-                    <div class="translation">beautiful</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="mim-family" class="letter-family">
-            <h3>Mim Family (م)</h3>
-            
-            <h4>م (Mim)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">مٌ</span></div>
-                    <div class="transliteration">mun</div>
-                    <div class="translation">letter M</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">مُ</span>سْلِمٌ</div>
-                    <div class="transliteration">muslimun</div>
-                    <div class="translation">Muslim</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">رَحْ<span class="target">مَ</span>ةٌ</div>
-                    <div class="transliteration">raḥmatun</div>
-                    <div class="translation">mercy</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">إِسْلَا<span class="target">مٌ</span></div>
-                    <div class="transliteration">'islāmun</div>
-                    <div class="translation">Islam</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="ha-family" class="letter-family">
-            <h3>Ha Family (ه، ة)</h3>
-            
-            <h4>ه (Ha)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated</div>
-                    <div class="arabic-text"><span class="target">هٌ</span></div>
-                    <div class="transliteration">hun</div>
-                    <div class="translation">letter H</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial</div>
-                    <div class="arabic-text"><span class="target">هُ</span>وَ</div>
-                    <div class="transliteration">huwa</div>
-                    <div class="translation">he</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Medial</div>
-                    <div class="arabic-text">إِلَ<span class="target">هٌ</span></div>
-                    <div class="transliteration">'ilāhun</div>
-                    <div class="translation">god</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final</div>
-                    <div class="arabic-text">اللَّ<span class="target">هُ</span></div>
-                    <div class="transliteration">allāhu</div>
-                    <div class="translation">Allah</div>
-                </div>
-            </div>
-
-            <h4>ة (Ta Marbuta)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Final only</div>
-                    <div class="arabic-text">رَحْمَ<span class="target">ةٌ</span></div>
-                    <div class="transliteration">raḥmatun</div>
-                    <div class="translation">mercy</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final only</div>
-                    <div class="arabic-text">جَنَّ<span class="target">ةٌ</span></div>
-                    <div class="transliteration">jannatun</div>
-                    <div class="translation">paradise</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final only</div>
-                    <div class="arabic-text">صَلَا<span class="target">ةٌ</span></div>
-                    <div class="transliteration">ṣalātun</div>
-                    <div class="translation">prayer</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Final only</div>
-                    <div class="arabic-text">آيَ<span class="target">ةٌ</span></div>
-                    <div class="transliteration">'āyatun</div>
-                    <div class="translation">verse</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="waw-family" class="letter-family">
-            <h3>Waw Family (و) - Non-connecting</h3>
-            
-            <h4>و (Waw)</h4>
-            <div class="forms-container">
-                <div class="form-example">
-                    <div class="form-name">Isolated / Final</div>
-                    <div class="arabic-text"><span class="target">وٌ</span></div>
-                    <div class="transliteration">wun</div>
-                    <div class="translation">letter W</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Initial / Medial</div>
-                    <div class="arabic-text"><span class="target">وَ</span>اللَّهُ</div>
-                    <div class="transliteration">wa-llāhu</div>
-                    <div class="translation">and Allah</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">After connection</div>
-                    <div class="arabic-text">نُ<span class="target">ورٌ</span></div>
-                    <div class="transliteration">nūrun</div>
-                    <div class="translation">light</div>
-                </div>
-                <div class="form-example">
-                    <div class="form-name">Between letters</div>
-                    <div class="arabic-text">يَ<span class="target">وْ</span>مٌ</div>
-                    <div class="transliteration">yawmun</div>
-                    <div class="translation">day</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="ya-family" class="letter-family">
-            <h3>Ya Family (ي)</h3>
-            <p><em>Note: ي (Ya) is already covered in the Ba Family section above, as it shares the same base shape.</em></p>
-        </div>
-
-    </div>
-
-    <div class="section">
-        <h2 id="vowel-marks">Vowel Marks (Tashkīl)</h2>
-
-        <div class="marks-container">
-            <div class="mark-example">
-                <div class="mark-name">Fatha (َ)</div>
-                <div class="arabic-text">كَ<span class="target">تَ</span>بَ</div>
-                <div class="transliteration">kataba</div>
-                <div class="translation">he wrote</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Kasra (ِ)</div>
-                <div class="arabic-text">ك<span class="target">ِ</span>تَابٌ</div>
-                <div class="transliteration">kitābun</div>
-                <div class="translation">book</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Damma (ُ)</div>
-                <div class="arabic-text">ن<span class="target">ُ</span>ورٌ</div>
-                <div class="transliteration">nūrun</div>
-                <div class="translation">light</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Sukūn (ْ)</div>
-                <div class="arabic-text">بَ<span class="target">يْ</span>تٌ</div>
-                <div class="transliteration">baytun</div>
-                <div class="translation">house</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Tanwīn Fath (ًا)</div>
-                <div class="arabic-text">كِتَاب<span class="target">ًا</span></div>
-                <div class="transliteration">kitāban</div>
-                <div class="translation">a book (acc.)</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Tanwīn Kasr (ٍ)</div>
-                <div class="arabic-text">كِتَاب<span class="target">ٍ</span></div>
-                <div class="transliteration">kitābin</div>
-                <div class="translation">of a book (gen.)</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Tanwīn Damm (ٌ)</div>
-                <div class="arabic-text">كِتَاب<span class="target">ٌ</span></div>
-                <div class="transliteration">kitābun</div>
-                <div class="translation">a book (nom.)</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2 id="other-marks">Other Diacritical Marks</h2>
-
-        <div class="marks-container">
-            <div class="mark-example">
-                <div class="mark-name">Shadda (ّ)</div>
-                <div class="arabic-text">مُعَل<span class="target">ّ</span>ِمٌ</div>
-                <div class="transliteration">mu'allimun</div>
-                <div class="translation">teacher</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Hamza on Alif (أ)</div>
-                <div class="arabic-text"><span class="target">أَ</span>نْتَ</div>
-                <div class="transliteration">'anta</div>
-                <div class="translation">you</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Hamza under Alif (إ)</div>
-                <div class="arabic-text"><span class="target">إِ</span>لَى</div>
-                <div class="transliteration">'ilā</div>
-                <div class="translation">to</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Madda (آ)</div>
-                <div class="arabic-text"><span class="target">آ</span>مَنَ</div>
-                <div class="transliteration">'āmana</div>
-                <div class="translation">he believed</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Hamza on Waw (ؤ)</div>
-                <div class="arabic-text">مُ<span class="target">ؤْ</span>مِنٌ</div>
-                <div class="transliteration">mu'minun</div>
-                <div class="translation">believer</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Hamza on Ya (ئ)</div>
-                <div class="arabic-text">شَ<span class="target">يْ</span>ءٌ</div>
-                <div class="transliteration">shay'un</div>
-                <div class="translation">thing</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Isolated Hamza (ء)</div>
-                <div class="arabic-text">جُز<span class="target">ءٌ</span></div>
-                <div class="transliteration">juz'un</div>
-                <div class="translation">part</div>
-            </div>
-            
-            <div class="mark-example">
-                <div class="mark-name">Alif Khanjariyya (ٰ)</div>
-                <div class="arabic-text
+</html>
