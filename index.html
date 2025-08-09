@@ -317,7 +317,7 @@
             <div class="card" id="card">
                 <div class="card-face card-front">
                     <div class="instruction">Tap to flip • Look for the red letter</div>
-                    <div class="arabic-text" id="arabicText"></div>
+                    <div class="arabic-text" id="arabicText">Loading...</div>
                 </div>
                 <div class="card-face card-back">
                     <div class="target-highlight">
@@ -339,347 +339,189 @@
     </div>
 
     <div class="progress" id="progress">
-        <span id="currentCard">1</span> / <span id="totalCards">0</span>
+        <span id="currentCard">1</span> / <span id="totalCards">120</span>
     </div>
 
     <script>
+        // Complete flashcard data - 120 cards total
         const flashcards = [
-            {
-                arabic: 'ٱللَّهُ',
-                target: 'ا',
-                position: 'initial',
-                transliteration: 'Allāh',
-                translation: 'Allah',
-                targetName: 'Alif (initial)'
-            },
-            {
-                arabic: 'مَلَائِكَةً',
-                target: 'ا',
-                position: 'medial',
-                transliteration: 'malāʾikatan',
-                translation: 'angels',
-                targetName: 'Alif (medial)'
-            },
-            {
-                arabic: 'دُعَاءً',
-                target: 'ا',
-                position: 'final',
-                transliteration: 'duʿāʾan',
-                translation: 'prayer/supplication',
-                targetName: 'Alif (final)'
-            },
-            {
-                arabic: 'بِسْمِ',
-                target: 'ب',
-                position: 'initial',
-                transliteration: 'bismi',
-                translation: 'in the name of',
-                targetName: 'Bāʾ (initial)'
-            },
-            {
-                arabic: 'كِتَابٌ',
-                target: 'ب',
-                position: 'medial',
-                transliteration: 'kitābun',
-                translation: 'book',
-                targetName: 'Bāʾ (medial)'
-            },
-            {
-                arabic: 'رَبُّ',
-                target: 'ب',
-                position: 'isolated',
-                transliteration: 'rabbu',
-                translation: 'Lord',
-                targetName: 'Bāʾ (isolated)'
-            },
-            {
-                arabic: 'تُوبُوا',
-                target: 'ت',
-                position: 'initial',
-                transliteration: 'tūbū',
-                translation: 'repent',
-                targetName: 'Tāʾ (initial)'
-            },
-            {
-                arabic: 'بَيْتِ',
-                target: 'ت',
-                position: 'final',
-                transliteration: 'bayti',
-                translation: 'house',
-                targetName: 'Tāʾ (final)'
-            },
-            {
-                arabic: 'ثَلَاثَةٌ',
-                target: 'ث',
-                position: 'initial',
-                transliteration: 'thalātha',
-                translation: 'three',
-                targetName: 'Thāʾ (initial)'
-            },
-            {
-                arabic: 'الْحَدِيثِ',
-                target: 'ث',
-                position: 'final',
-                transliteration: 'al-ḥadīthi',
-                translation: 'the speech',
-                targetName: 'Thāʾ (final)'
-            },
-            {
-                arabic: 'جَنَّةٌ',
-                target: 'ج',
-                position: 'initial',
-                transliteration: 'jannatun',
-                translation: 'paradise',
-                targetName: 'Jīm (initial)'
-            },
-            {
-                arabic: 'الْحَجِّ',
-                target: 'ج',
-                position: 'final',
-                transliteration: 'al-ḥajji',
-                translation: 'the pilgrimage',
-                targetName: 'Jīm (final)'
-            },
-            {
-                arabic: 'حَمِدَ',
-                target: 'ح',
-                position: 'initial',
-                transliteration: 'ḥamida',
-                translation: 'he praised',
-                targetName: 'Ḥāʾ (initial)'
-            },
-            {
-                arabic: 'رَحْمَةً',
-                target: 'ح',
-                position: 'medial',
-                transliteration: 'raḥmatan',
-                translation: 'mercy',
-                targetName: 'Ḥāʾ (medial)'
-            },
-            {
-                arabic: 'خَيْرٌ',
-                target: 'خ',
-                position: 'initial',
-                transliteration: 'khayrun',
-                translation: 'good/better',
-                targetName: 'Khāʾ (initial)'
-            },
-            {
-                arabic: 'دِينٌ',
-                target: 'د',
-                position: 'initial',
-                transliteration: 'dīnun',
-                translation: 'religion',
-                targetName: 'Dāl (initial)'
-            },
-            {
-                arabic: 'ذَلِكَ',
-                target: 'ذ',
-                position: 'initial',
-                transliteration: 'dhālika',
-                translation: 'that',
-                targetName: 'Dhāl (initial)'
-            },
-            {
-                arabic: 'رَبُّ',
-                target: 'ر',
-                position: 'initial',
-                transliteration: 'rabbu',
-                translation: 'Lord',
-                targetName: 'Rāʾ (initial)'
-            },
-            {
-                arabic: 'قُرْآنٌ',
-                target: 'ر',
-                position: 'medial',
-                transliteration: 'qurʾānun',
-                translation: 'Quran',
-                targetName: 'Rāʾ (medial)'
-            },
-            {
-                arabic: 'زَكَاةٌ',
-                target: 'ز',
-                position: 'initial',
-                transliteration: 'zakātun',
-                translation: 'charity',
-                targetName: 'Zāy (initial)'
-            },
-            {
-                arabic: 'سَلَامٌ',
-                target: 'س',
-                position: 'initial',
-                transliteration: 'salāmun',
-                translation: 'peace',
-                targetName: 'Sīn (initial)'
-            },
-            {
-                arabic: 'مُسْلِمٌ',
-                target: 'س',
-                position: 'medial',
-                transliteration: 'muslimun',
-                translation: 'Muslim',
-                targetName: 'Sīn (medial)'
-            },
-            {
-                arabic: 'شَهِدَ',
-                target: 'ش',
-                position: 'initial',
-                transliteration: 'shahida',
-                translation: 'he witnessed',
-                targetName: 'Shīn (initial)'
-            },
-            {
-                arabic: 'صَلَاةٌ',
-                target: 'ص',
-                position: 'initial',
-                transliteration: 'ṣalātun',
-                translation: 'prayer',
-                targetName: 'Ṣād (initial)'
-            },
-            {
-                arabic: 'ضَلَّ',
-                target: 'ض',
-                position: 'initial',
-                transliteration: 'ḍalla',
-                translation: 'he went astray',
-                targetName: 'Ḍād (initial)'
-            },
-            {
-                arabic: 'طَيِّبٌ',
-                target: 'ط',
-                position: 'initial',
-                transliteration: 'ṭayyibun',
-                translation: 'good/pure',
-                targetName: 'Ṭāʾ (initial)'
-            },
-            {
-                arabic: 'ظَلَمَ',
-                target: 'ظ',
-                position: 'initial',
-                transliteration: 'ẓalama',
-                translation: 'he wronged',
-                targetName: 'Ẓāʾ (initial)'
-            },
-            {
-                arabic: 'عَبْدٌ',
-                target: 'ع',
-                position: 'initial',
-                transliteration: 'ʿabdun',
-                translation: 'servant',
-                targetName: 'ʿAyn (initial)'
-            },
-            {
-                arabic: 'غَفُورٌ',
-                target: 'غ',
-                position: 'initial',
-                transliteration: 'ghafūrun',
-                translation: 'forgiving',
-                targetName: 'Ghayn (initial)'
-            },
-            {
-                arabic: 'فَاتِحَةٌ',
-                target: 'ف',
-                position: 'initial',
-                transliteration: 'fātiḥatun',
-                translation: 'opening',
-                targetName: 'Fāʾ (initial)'
-            },
-            {
-                arabic: 'قُرْآنٌ',
-                target: 'ق',
-                position: 'initial',
-                transliteration: 'qurʾānun',
-                translation: 'Quran',
-                targetName: 'Qāf (initial)'
-            },
-            {
-                arabic: 'كِتَابٌ',
-                target: 'ك',
-                position: 'initial',
-                transliteration: 'kitābun',
-                translation: 'book',
-                targetName: 'Kāf (initial)'
-            },
-            {
-                arabic: 'لَا',
-                target: 'ل',
-                position: 'initial',
-                transliteration: 'lā',
-                translation: 'no/not',
-                targetName: 'Lām (initial)'
-            },
-            {
-                arabic: 'مُؤْمِنٌ',
-                target: 'م',
-                position: 'initial',
-                transliteration: 'muʾminun',
-                translation: 'believer',
-                targetName: 'Mīm (initial)'
-            },
-            {
-                arabic: 'نُورٌ',
-                target: 'ن',
-                position: 'initial',
-                transliteration: 'nūrun',
-                translation: 'light',
-                targetName: 'Nūn (initial)'
-            },
-            {
-                arabic: 'هُوَ',
-                target: 'ه',
-                position: 'initial',
-                transliteration: 'huwa',
-                translation: 'he',
-                targetName: 'Hāʾ (initial)'
-            },
-            {
-                arabic: 'وَلَدٌ',
-                target: 'و',
-                position: 'initial',
-                transliteration: 'waladun',
-                translation: 'child',
-                targetName: 'Wāw (initial)'
-            },
-            {
-                arabic: 'يَوْمٌ',
-                target: 'ي',
-                position: 'initial',
-                transliteration: 'yawmun',
-                translation: 'day',
-                targetName: 'Yāʾ (initial)'
-            },
-            {
-                arabic: 'كَتَبَ',
-                target: 'َ',
-                position: 'diacritic',
-                transliteration: 'kataba',
-                translation: 'he wrote',
-                targetName: 'Fatḥa (a)'
-            },
-            {
-                arabic: 'قُلْ',
-                target: 'ُ',
-                position: 'diacritic',
-                transliteration: 'qul',
-                translation: 'say',
-                targetName: 'Ḍamma (u)'
-            },
-            {
-                arabic: 'بِسْمِ',
-                target: 'ِ',
-                position: 'diacritic',
-                transliteration: 'bismi',
-                translation: 'in the name of',
-                targetName: 'Kasra (i)'
-            },
-            {
-                arabic: 'رَبِّ',
-                target: 'ّ',
-                position: 'diacritic',
-                transliteration: 'rabbi',
-                translation: 'my Lord',
-                targetName: 'Shadda (doubling)'
-            }
+            // Alif (4 cards)
+            {arabic: 'ٱللَّهُ', target: 'ا', transliteration: 'Allāh', translation: 'Allah', targetName: 'Alif (initial)'},
+            {arabic: 'مَلَائِكَةً', target: 'ا', transliteration: 'malāʾikatan', translation: 'angels', targetName: 'Alif (medial)'},
+            {arabic: 'دُعَاءً', target: 'ا', transliteration: 'duʿāʾan', translation: 'supplication', targetName: 'Alif (final)'},
+            {arabic: 'أَنْزَلْنَا', target: 'ا', transliteration: 'anzalnā', translation: 'We sent down', targetName: 'Alif (isolated)'},
+            
+            // Bāʾ (4 cards)
+            {arabic: 'بِسْمِ', target: 'ب', transliteration: 'bismi', translation: 'in the name of', targetName: 'Bāʾ (initial)'},
+            {arabic: 'كِتَابٌ', target: 'ب', transliteration: 'kitābun', translation: 'book', targetName: 'Bāʾ (medial)'},
+            {arabic: 'غَرْبِ', target: 'ب', transliteration: 'gharbi', translation: 'west', targetName: 'Bāʾ (final)'},
+            {arabic: 'رَبُّ', target: 'ب', transliteration: 'rabbu', translation: 'Lord', targetName: 'Bāʾ (isolated)'},
+            
+            // Tāʾ (4 cards)
+            {arabic: 'تُوبُوا', target: 'ت', transliteration: 'tūbū', translation: 'repent', targetName: 'Tāʾ (initial)'},
+            {arabic: 'كِتَابٌ', target: 'ت', transliteration: 'kitābun', translation: 'book', targetName: 'Tāʾ (medial)'},
+            {arabic: 'بَيْتِ', target: 'ت', transliteration: 'bayti', translation: 'house', targetName: 'Tāʾ (final)'},
+            {arabic: 'وَقْتٌ', target: 'ت', transliteration: 'waqtun', translation: 'time', targetName: 'Tāʾ (isolated)'},
+            
+            // Thāʾ (4 cards)
+            {arabic: 'ثَلَاثَةٌ', target: 'ث', transliteration: 'thalātha', translation: 'three', targetName: 'Thāʾ (initial)'},
+            {arabic: 'مِيثَاقًا', target: 'ث', transliteration: 'mīthāqan', translation: 'covenant', targetName: 'Thāʾ (medial)'},
+            {arabic: 'الْحَدِيثِ', target: 'ث', transliteration: 'al-ḥadīthi', translation: 'the speech', targetName: 'Thāʾ (final)'},
+            {arabic: 'بَعْثٌ', target: 'ث', transliteration: 'baʿthun', translation: 'resurrection', targetName: 'Thāʾ (isolated)'},
+            
+            // Jīm (4 cards)
+            {arabic: 'جَنَّةٌ', target: 'ج', transliteration: 'jannatun', translation: 'paradise', targetName: 'Jīm (initial)'},
+            {arabic: 'مُنَافِقُونَ', target: 'ج', transliteration: 'munāfiqūna', translation: 'hypocrites', targetName: 'Jīm (medial)'},
+            {arabic: 'الْحَجِّ', target: 'ج', transliteration: 'al-ḥajji', translation: 'the pilgrimage', targetName: 'Jīm (final)'},
+            {arabic: 'رَجْعٌ', target: 'ج', transliteration: 'rajʿun', translation: 'return', targetName: 'Jīm (isolated)'},
+            
+            // Ḥāʾ (4 cards)
+            {arabic: 'حَمِدَ', target: 'ح', transliteration: 'ḥamida', translation: 'he praised', targetName: 'Ḥāʾ (initial)'},
+            {arabic: 'رَحْمَةً', target: 'ح', transliteration: 'raḥmatan', translation: 'mercy', targetName: 'Ḥāʾ (medial)'},
+            {arabic: 'رُوحِ', target: 'ح', transliteration: 'rūḥi', translation: 'spirit', targetName: 'Ḥāʾ (final)'},
+            {arabic: 'نُوحٌ', target: 'ح', transliteration: 'Nūḥun', translation: 'Noah', targetName: 'Ḥāʾ (isolated)'},
+            
+            // Khāʾ (4 cards)
+            {arabic: 'خَيْرٌ', target: 'خ', transliteration: 'khayrun', translation: 'good', targetName: 'Khāʾ (initial)'},
+            {arabic: 'مَخْلُوقَاتٍ', target: 'خ', transliteration: 'makhlūqātin', translation: 'creatures', targetName: 'Khāʾ (medial)'},
+            {arabic: 'صَرْخَةٍ', target: 'خ', transliteration: 'ṣarkhatin', translation: 'cry', targetName: 'Khāʾ (final)'},
+            {arabic: 'شَيْخٌ', target: 'خ', transliteration: 'shaykhun', translation: 'elder', targetName: 'Khāʾ (isolated)'},
+            
+            // Dāl (4 cards)
+            {arabic: 'دِينٌ', target: 'د', transliteration: 'dīnun', translation: 'religion', targetName: 'Dāl (initial)'},
+            {arabic: 'عِنْدَ', target: 'د', transliteration: 'ʿinda', translation: 'with', targetName: 'Dāl (medial)'},
+            {arabic: 'عَبْدٍ', target: 'د', transliteration: 'ʿabdin', translation: 'servant', targetName: 'Dāl (final)'},
+            {arabic: 'أَحَدٌ', target: 'د', transliteration: 'aḥadun', translation: 'one', targetName: 'Dāl (isolated)'},
+            
+            // Dhāl (4 cards)
+            {arabic: 'ذَلِكَ', target: 'ذ', transliteration: 'dhālika', translation: 'that', targetName: 'Dhāl (initial)'},
+            {arabic: 'إِذَا', target: 'ذ', transliteration: 'idhā', translation: 'when', targetName: 'Dhāl (medial)'},
+            {arabic: 'عَاذَ', target: 'ذ', transliteration: 'ʿādha', translation: 'he sought refuge', targetName: 'Dhāl (final)'},
+            {arabic: 'مُنْذُ', target: 'ذ', transliteration: 'mundhu', translation: 'since', targetName: 'Dhāl (isolated)'},
+            
+            // Rāʾ (4 cards)
+            {arabic: 'رَبُّ', target: 'ر', transliteration: 'rabbu', translation: 'Lord', targetName: 'Rāʾ (initial)'},
+            {arabic: 'قُرْآنٌ', target: 'ر', transliteration: 'qurʾānun', translation: 'Quran', targetName: 'Rāʾ (medial)'},
+            {arabic: 'النَّارِ', target: 'ر', transliteration: 'an-nāri', translation: 'the fire', targetName: 'Rāʾ (final)'},
+            {arabic: 'نُورٌ', target: 'ر', transliteration: 'nūrun', translation: 'light', targetName: 'Rāʾ (isolated)'},
+            
+            // Zāy (4 cards)
+            {arabic: 'زَكَاةٌ', target: 'ز', transliteration: 'zakātun', translation: 'charity', targetName: 'Zāy (initial)'},
+            {arabic: 'عَزِيزٌ', target: 'ز', transliteration: 'ʿazīzun', translation: 'mighty', targetName: 'Zāy (medial)'},
+            {arabic: 'فَازَ', target: 'ز', transliteration: 'fāza', translation: 'he succeeded', targetName: 'Zāy (final)'},
+            {arabic: 'رِزْقٌ', target: 'ز', transliteration: 'rizqun', translation: 'provision', targetName: 'Zāy (isolated)'},
+            
+            // Sīn (4 cards)
+            {arabic: 'سَلَامٌ', target: 'س', transliteration: 'salāmun', translation: 'peace', targetName: 'Sīn (initial)'},
+            {arabic: 'مُسْلِمٌ', target: 'س', transliteration: 'muslimun', translation: 'Muslim', targetName: 'Sīn (medial)'},
+            {arabic: 'النَّاسِ', target: 'س', transliteration: 'an-nāsi', translation: 'the people', targetName: 'Sīn (final)'},
+            {arabic: 'خَمْسٌ', target: 'س', transliteration: 'khamsun', translation: 'five', targetName: 'Sīn (isolated)'},
+            
+            // Shīn (4 cards)
+            {arabic: 'شَهِدَ', target: 'ش', transliteration: 'shahida', translation: 'he witnessed', targetName: 'Shīn (initial)'},
+            {arabic: 'مَشَاءَ', target: 'ش', transliteration: 'mashāʾa', translation: 'he willed', targetName: 'Shīn (medial)'},
+            {arabic: 'الْعَرْشِ', target: 'ش', transliteration: 'al-ʿarshi', translation: 'the throne', targetName: 'Shīn (final)'},
+            {arabic: 'وَحْشٌ', target: 'ش', transliteration: 'waḥshun', translation: 'wild beast', targetName: 'Shīn (isolated)'},
+            
+            // Ṣād (4 cards)
+            {arabic: 'صَلَاةٌ', target: 'ص', transliteration: 'ṣalātun', translation: 'prayer', targetName: 'Ṣād (initial)'},
+            {arabic: 'أَصْحَابُ', target: 'ص', transliteration: 'aṣḥābu', translation: 'companions', targetName: 'Ṣād (medial)'},
+            {arabic: 'خَالِصٌ', target: 'ص', transliteration: 'khāliṣun', translation: 'pure', targetName: 'Ṣād (final)'},
+            {arabic: 'قِصَصٌ', target: 'ص', transliteration: 'qiṣaṣun', translation: 'stories', targetName: 'Ṣād (isolated)'},
+            
+            // Ḍād (4 cards)
+            {arabic: 'ضَلَّ', target: 'ض', transliteration: 'ḍalla', translation: 'he went astray', targetName: 'Ḍād (initial)'},
+            {arabic: 'مُضْطَرٌّ', target: 'ض', transliteration: 'muḍṭarrun', translation: 'compelled', targetName: 'Ḍād (medial)'},
+            {arabic: 'أَرْضٍ', target: 'ض', transliteration: 'arḍin', translation: 'earth', targetName: 'Ḍād (final)'},
+            {arabic: 'بَعْضٌ', target: 'ض', transliteration: 'baʿḍun', translation: 'some', targetName: 'Ḍād (isolated)'},
+            
+            // Ṭāʾ (4 cards)
+            {arabic: 'طَيِّبٌ', target: 'ط', transliteration: 'ṭayyibun', translation: 'good', targetName: 'Ṭāʾ (initial)'},
+            {arabic: 'مُسْتَطِيعٌ', target: 'ط', transliteration: 'mustaṭīʿun', translation: 'able', targetName: 'Ṭāʾ (medial)'},
+            {arabic: 'خَطَأً', target: 'ط', transliteration: 'khaṭaʾan', translation: 'mistake', targetName: 'Ṭāʾ (final)'},
+            {arabic: 'قِطٌّ', target: 'ط', transliteration: 'qiṭṭun', translation: 'cat', targetName: 'Ṭāʾ (isolated)'},
+            
+            // Ẓāʾ (4 cards)
+            {arabic: 'ظَلَمَ', target: 'ظ', transliteration: 'ẓalama', translation: 'he wronged', targetName: 'Ẓāʾ (initial)'},
+            {arabic: 'مَظْلُومٌ', target: 'ظ', transliteration: 'maẓlūmun', translation: 'wronged', targetName: 'Ẓāʾ (medial)'},
+            {arabic: 'حَافِظٌ', target: 'ظ', transliteration: 'ḥāfiẓun', translation: 'guardian', targetName: 'Ẓāʾ (final)'},
+            {arabic: 'لَفْظٌ', target: 'ظ', transliteration: 'lafẓun', translation: 'pronunciation', targetName: 'Ẓāʾ (isolated)'},
+            
+            // ʿAyn (4 cards)
+            {arabic: 'عَبْدٌ', target: 'ع', transliteration: 'ʿabdun', translation: 'servant', targetName: 'ʿAyn (initial)'},
+            {arabic: 'سَمِعَ', target: 'ع', transliteration: 'samiʿa', translation: 'he heard', targetName: 'ʿAyn (medial)'},
+            {arabic: 'جَمِيعٌ', target: 'ع', transliteration: 'jamīʿun', translation: 'all', targetName: 'ʿAyn (final)'},
+            {arabic: 'رَفْعٌ', target: 'ع', transliteration: 'rafʿun', translation: 'raising', targetName: 'ʿAyn (isolated)'},
+            
+            // Ghayn (4 cards)
+            {arabic: 'غَفُورٌ', target: 'غ', transliteration: 'ghafūrun', translation: 'forgiving', targetName: 'Ghayn (initial)'},
+            {arabic: 'مَغْفِرَةٌ', target: 'غ', transliteration: 'maghfiratun', translation: 'forgiveness', targetName: 'Ghayn (medial)'},
+            {arabic: 'بَلَاغٌ', target: 'غ', transliteration: 'balāghun', translation: 'message', targetName: 'Ghayn (final)'},
+            {arabic: 'صِيَغٌ', target: 'غ', transliteration: 'ṣiyaghun', translation: 'forms', targetName: 'Ghayn (isolated)'},
+            
+            // Fāʾ (4 cards)
+            {arabic: 'فَاتِحَةٌ', target: 'ف', transliteration: 'fātiḥatun', translation: 'opening', targetName: 'Fāʾ (initial)'},
+            {arabic: 'مُنَافِقٌ', target: 'ف', transliteration: 'munāfiqun', translation: 'hypocrite', targetName: 'Fāʾ (medial)'},
+            {arabic: 'يُوسُفَ', target: 'ف', transliteration: 'Yūsufa', translation: 'Joseph', targetName: 'Fāʾ (final)'},
+            {arabic: 'عَفْوٌ', target: 'ف', transliteration: 'ʿafwun', translation: 'pardon', targetName: 'Fāʾ (isolated)'},
+            
+            // Qāf (4 cards)
+            {arabic: 'قُرْآنٌ', target: 'ق', transliteration: 'qurʾānun', translation: 'Quran', targetName: 'Qāf (initial)'},
+            {arabic: 'مُتَّقِينَ', target: 'ق', transliteration: 'muttaqīna', translation: 'the pious', targetName: 'Qāf (medial)'},
+            {arabic: 'خَلَقَ', target: 'ق', transliteration: 'khalaqa', translation: 'he created', targetName: 'Qāf (final)'},
+            {arabic: 'حَقٌّ', target: 'ق', transliteration: 'ḥaqqun', translation: 'truth', targetName: 'Qāf (isolated)'},
+            
+            // Kāf (4 cards)
+            {arabic: 'كِتَابٌ', target: 'ك', transliteration: 'kitābun', translation: 'book', targetName: 'Kāf (initial)'},
+            {arabic: 'مَكَّةَ', target: 'ك', transliteration: 'Makkata', translation: 'Mecca', targetName: 'Kāf (medial)'},
+            {arabic: 'مَلَكٍ', target: 'ك', transliteration: 'malakin', translation: 'angel', targetName: 'Kāf (final)'},
+            {arabic: 'ذَلِكَ', target: 'ك', transliteration: 'dhālika', translation: 'that', targetName: 'Kāf (isolated)'},
+            
+            // Lām (4 cards)
+            {arabic: 'لَا', target: 'ل', transliteration: 'lā', translation: 'no/not', targetName: 'Lām (initial)'},
+            {arabic: 'صَلَاةٌ', target: 'ل', transliteration: 'ṣalātun', translation: 'prayer', targetName: 'Lām (medial)'},
+            {arabic: 'قُلْ', target: 'ل', transliteration: 'qul', translation: 'say', targetName: 'Lām (final)'},
+            {arabic: 'كُلُّ', target: 'ل', transliteration: 'kullu', translation: 'all', targetName: 'Lām (isolated)'},
+            
+            // Mīm (4 cards)
+            {arabic: 'مُؤْمِنٌ', target: 'م', transliteration: 'muʾminun', translation: 'believer', targetName: 'Mīm (initial)'},
+            {arabic: 'رَحْمَةٌ', target: 'م', transliteration: 'raḥmatun', translation: 'mercy', targetName: 'Mīm (medial)'},
+            {arabic: 'إِبْرَاهِيمَ', target: 'م', transliteration: 'Ibrāhīma', translation: 'Abraham', targetName: 'Mīm (final)'},
+            {arabic: 'يَوْمٌ', target: 'م', transliteration: 'yawmun', translation: 'day', targetName: 'Mīm (isolated)'},
+            
+            // Nūn (4 cards)
+            {arabic: 'نُورٌ', target: 'ن', transliteration: 'nūrun', translation: 'light', targetName: 'Nūn (initial)'},
+            {arabic: 'مُؤْمِنُونَ', target: 'ن', transliteration: 'muʾminūna', translation: 'believers', targetName: 'Nūn (medial)'},
+            {arabic: 'الرَّحْمَنِ', target: 'ن', transliteration: 'ar-raḥmāni', translation: 'the Merciful', targetName: 'Nūn (final)'},
+            {arabic: 'مِنْ', target: 'ن', transliteration: 'min', translation: 'from', targetName: 'Nūn (isolated)'},
+            
+            // Hāʾ (4 cards)
+            {arabic: 'هُوَ', target: 'ه', transliteration: 'huwa', translation: 'he', targetName: 'Hāʾ (initial)'},
+            {arabic: 'إِلَهٌ', target: 'ه', transliteration: 'ilāhun', translation: 'god', targetName: 'Hāʾ (medial)'},
+            {arabic: 'ٱللَّهُ', target: 'ه', transliteration: 'Allāhu', translation: 'Allah', targetName: 'Hāʾ (final)'},
+            {arabic: 'فِيهِ', target: 'ه', transliteration: 'fīhi', translation: 'in it', targetName: 'Hāʾ (isolated)'},
+            
+            // Wāw (4 cards)
+            {arabic: 'وَلَدٌ', target: 'و', transliteration: 'waladun', translation: 'child', targetName: 'Wāw (initial)'},
+            {arabic: 'دَعْوَةٌ', target: 'و', transliteration: 'daʿwatun', translation: 'call', targetName: 'Wāw (medial)'},
+            {arabic: 'يَدْعُو', target: 'و', transliteration: 'yadʿū', translation: 'he calls', targetName: 'Wāw (final)'},
+            {arabic: 'هُوَ', target: 'و', transliteration: 'huwa', translation: 'he', targetName: 'Wāw (isolated)'},
+            
+            // Yāʾ (4 cards)
+            {arabic: 'يَوْمٌ', target: 'ي', transliteration: 'yawmun', translation: 'day', targetName: 'Yāʾ (initial)'},
+            {arabic: 'الْغَيْبِ', target: 'ي', transliteration: 'al-ghaybi', translation: 'the unseen', targetName: 'Yāʾ (medial)'},
+            {arabic: 'الَّذِي', target: 'ي', transliteration: 'alladhī', translation: 'who/which', targetName: 'Yāʾ (final)'},
+            {arabic: 'فِي', target: 'ي', transliteration: 'fī', translation: 'in', targetName: 'Yāʾ (isolated)'},
+            
+            // Diacritics (8 cards)
+            {arabic: 'كَتَبَ', target: 'َ', transliteration: 'kataba', translation: 'he wrote', targetName: 'Fatḥa (a)'},
+            {arabic: 'قُلْ', target: 'ُ', transliteration: 'qul', translation: 'say', targetName: 'Ḍamma (u)'},
+            {arabic: 'بِسْمِ', target: 'ِ', transliteration: 'bismi', translation: 'in the name of', targetName: 'Kasra (i)'},
+            {arabic: 'قُلْ', target: 'ْ', transliteration: 'qul', translation: 'say', targetName: 'Sukūn (no vowel)'},
+            {arabic: 'رَبِّ', target: 'ّ', transliteration: 'rabbi', translation: 'my Lord', targetName: 'Shadda (doubling)'},
+            {arabic: 'كِتَابًا', target: 'ً', transliteration: 'kitāban', translation: 'a book (acc.)', targetName: 'Tanwīn fatḥ (an)'},
+            {arabic: 'كِتَابٌ', target: 'ٌ', transliteration: 'kitābun', translation: 'a book (nom.)', targetName: 'Tanwīn ḍamm (un)'},
+            {arabic: 'كِتَابٍ', target: 'ٍ', transliteration: 'kitābin', translation: 'a book (gen.)', targetName: 'Tanwīn kasr (in)'}
         ];
 
         let currentIndex = 0;
@@ -743,7 +585,9 @@
                 { symbol: 'َ', name: 'fatḥa' },
                 { symbol: 'ُ', name: 'ḍamma' },
                 { symbol: 'ِ', name: 'kasra' },
-                { symbol: 'ّ', name: 'shadda' }
+                { symbol: 'ْ', name: 'sukūn' },
+                { symbol: 'ّ', name: 'shadda' },
+                { symbol: 'ً', name: 'tanwīn' }
             ];
 
             diacritics.forEach(diacritic => {
@@ -783,7 +627,12 @@
             const currentCard = flashcards[currentIndex];
             navBtns.forEach(btn => {
                 if (btn.textContent === currentCard.target || 
-                    (currentCard.position === 'diacritic' && btn.textContent.includes(currentCard.targetName.split(' ')[0].toLowerCase()))) {
+                    (currentCard.targetName.includes('(a)') && btn.textContent === 'fatḥa') ||
+                    (currentCard.targetName.includes('(u)') && btn.textContent === 'ḍamma') ||
+                    (currentCard.targetName.includes('(i)') && btn.textContent === 'kasra') ||
+                    (currentCard.targetName.includes('no vowel') && btn.textContent === 'sukūn') ||
+                    (currentCard.targetName.includes('doubling') && btn.textContent === 'shadda') ||
+                    (currentCard.targetName.includes('Tanwīn') && btn.textContent === 'tanwīn')) {
                     btn.classList.add('active');
                 }
             });
@@ -799,13 +648,15 @@
             const currentCardSpan = document.getElementById('currentCard');
             const totalCardsSpan = document.getElementById('totalCards');
 
+            // Highlight target letter/diacritic in red
             let highlightedText = card.arabic;
-            if (card.position === 'diacritic') {
-                highlightedText = card.arabic.replace(new RegExp(card.target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), 
+            try {
+                const escapedTarget = card.target.replace(/[.*+?^${}()|[\]\\]/g, '\\            // Lām (4 cards)');
+                highlightedText = card.arabic.replace(new RegExp(escapedTarget, 'g'), 
                     `<span class="target-letter">${card.target}</span>`);
-            } else {
-                highlightedText = card.arabic.replace(new RegExp(card.target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), 
-                    `<span class="target-letter">${card.target}</span>`);
+            } catch (e) {
+                // Fallback if regex fails
+                highlightedText = card.arabic.split(card.target).join(`<span class="target-letter">${card.target}</span>`);
             }
             
             arabicText.innerHTML = highlightedText;
@@ -816,6 +667,7 @@
             currentCardSpan.textContent = currentIndex + 1;
             totalCardsSpan.textContent = flashcards.length;
 
+            // Reset flip state
             isFlipped = false;
             document.getElementById('card').classList.remove('flipped');
         }
@@ -838,10 +690,12 @@
             updateNavigation();
         }
 
+        // Event listeners
         document.getElementById('flashcard').addEventListener('click', flipCard);
         document.getElementById('nextBtn').addEventListener('click', nextCard);
         document.getElementById('prevBtn').addEventListener('click', prevCard);
 
+        // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             switch(e.key) {
                 case ' ':
@@ -860,6 +714,7 @@
             }
         });
 
+        // Touch gestures for mobile
         let touchStartX = 0;
         let touchEndX = 0;
 
@@ -880,9 +735,17 @@
             }
         });
 
-        createNavigation();
-        updateCard();
-        updateNavigation();
+        // Initialize when page loads
+        try {
+            createNavigation();
+            updateCard();
+            updateNavigation();
+            console.log('Flashcards loaded successfully:', flashcards.length, 'cards');
+        } catch (error) {
+            console.error('Error initializing flashcards:', error);
+            document.getElementById('arabicText').textContent = 'Error loading flashcards';
+        }
     </script>
 </body>
 </html>
+            
